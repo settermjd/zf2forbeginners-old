@@ -1,13 +1,13 @@
 ---
 vagrantfile-local:
     vm:
-        box: debian-wheezy72-x64-vbox43
-        box_url: 'http://box.puphpet.com/debian-wheezy72-x64-vbox43.box'
+        box: ubuntu-precise12042-x64-vbox43
+        box_url: 'http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box'
         hostname: null
         network:
             private_network: 192.168.56.120
             forwarded_port:
-                R8RFZhVMQqab:
+                VMqQ1uvbZNEG:
                     host: '9079'
                     guest: '22'
         provider:
@@ -26,9 +26,9 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            6ion0vynC5iD:
+            o5tC5PSyLWCT:
                 source: ./
-                target: /var/www
+                target: /var/www/zf24beginners
                 nfs: 'false'
         usable_port_range: 2200..2250
     ssh:
@@ -73,7 +73,7 @@ apache:
         - php
         - rewrite
     vhosts:
-        tpky3WVKUFFf:
+        p8644D4VUAnk:
             servername: zf24beginners.dev
             serveraliases:
                 - www.zf24beginners.dev
@@ -92,12 +92,12 @@ apache:
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
-    mod_pagespeed: '1'
-    mod_spdy: '1'
+    mod_pagespeed: 0
+    mod_spdy: 0
 nginx:
-    install: '0'
+    install: 0
     vhosts:
-        kvh8epnCQ3j0:
+        7MJY5oXTIVOJ:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -112,7 +112,7 @@ nginx:
 php:
     install: '1'
     version: '55'
-    composer: 1
+    composer: '1'
     modules:
         php:
             - cli
@@ -120,10 +120,10 @@ php:
             - mcrypt
         pear: {  }
         pecl:
-            - pecl_http
             - memcache
             - memcached
-            - ZendOpcache
+            - mongo
+            - pecl_http
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -150,7 +150,7 @@ mysql:
     phpmyadmin: 0
     adminer: 0
     databases:
-        otXnZTKmM60u:
+        Gqpdz21YsaKr:
             grant:
                 - ALL
             name: dbname

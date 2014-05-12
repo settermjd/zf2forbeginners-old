@@ -13,5 +13,9 @@
 		"zendframework/zend-log": "2.3.*@dev",
         "zendframework/zftool": "dev-master",
         "zendframework/zenddiagnostics": "1.0.*@dev"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master",
+        "phpunit/phpunit": "3.7.*"
     }
 }
