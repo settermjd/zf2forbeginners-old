@@ -7,7 +7,7 @@ vagrantfile-local:
         network:
             private_network: 192.168.56.120
             forwarded_port:
-                VMqQ1uvbZNEG:
+                BKB12cT2XNGt:
                     host: '9079'
                     guest: '22'
         provider:
@@ -26,7 +26,7 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            o5tC5PSyLWCT:
+            2uCeYYFqMbQF:
                 source: ./
                 target: /var/www/zf24beginners
                 nfs: 'false'
@@ -73,7 +73,7 @@ apache:
         - php
         - rewrite
     vhosts:
-        p8644D4VUAnk:
+        RWESw3mVaoVL:
             servername: zf24beginners.dev
             serveraliases:
                 - www.zf24beginners.dev
@@ -97,7 +97,7 @@ apache:
 nginx:
     install: 0
     vhosts:
-        7MJY5oXTIVOJ:
+        qFqmpeksuEBs:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -145,12 +145,12 @@ drush:
     settings:
         drush.tag_branch: 6.x
 mysql:
-    install: '1'
+    install: 0
     root_password: '123'
     phpmyadmin: 0
     adminer: 0
     databases:
-        Gqpdz21YsaKr:
+        HB3nZWOedXnY:
             grant:
                 - ALL
             name: dbname
@@ -165,7 +165,13 @@ postgresql:
         user_group: postgres
         encoding: UTF8
         version: '9.3'
-    databases: {  }
+    databases:
+        ckmwXeJ8MrEc:
+            grant: ALL
+            name: zf24beginners
+            user: zf24beginners
+            password: zf24beginners
+            sql_file: ''
     adminer: 0
 mariadb:
     install: 0
