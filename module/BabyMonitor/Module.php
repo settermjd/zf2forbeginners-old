@@ -49,13 +49,16 @@ class Module
                     'json',
                     'pdo',
                     'pdo_pgsql',
-                    'apc',
-                    'memcached'
+                    'intl',
+                    'session',
+                    'pcre',
+                    'zlib',
+                    'Zend OPcache'
                 ));
                 return $diagnostic->check();
             },
             'Check Apache is running' => function(){
-                $diagnostic = new ProcessRunning('httpd');
+                $diagnostic = new ProcessRunning('apache2');
                 return $diagnostic->check();
             },
             'Check PostgreSQL is running' => function(){
@@ -63,13 +66,12 @@ class Module
                 return $diagnostic->check();
             },
             'Check Memcached is running' => function(){
-                $diagnostic = new ProcessRunning('memcached');
+                $diagnostic = new ProcessRunning('beanstalkd');
                 return $diagnostic->check();
             },
             'Check PHP Version' => function(){
                 $diagnostic = new PhpVersion('5.3.0', '>=');
                 return $diagnostic->check();
-            }
         );
     }
 }
