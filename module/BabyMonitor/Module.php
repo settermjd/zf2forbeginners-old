@@ -72,6 +72,7 @@ class Module
             'Check PHP Version' => function(){
                 $diagnostic = new PhpVersion('5.3.0', '>=');
                 return $diagnostic->check();
+            }
         );
     }
 }
