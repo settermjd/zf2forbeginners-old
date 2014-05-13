@@ -40,6 +40,8 @@ class Module
             'factories' => array(
                 'BabyMonitor\Tables\UserTable' => 'BabyMonitor\Tables\Factories\UserTableFactory',
                 'BabyMonitor\Tables\UserTableGateway' => 'BabyMonitor\Tables\Factories\UserTablegatewayFactory',
+                'BabyMonitor\Tables\FeedTable' => 'BabyMonitor\Tables\Factories\FeedTableFactory',
+                'BabyMonitor\Tables\FeedTableGateway' => 'BabyMonitor\Tables\Factories\FeedTablegatewayFactory',
             )
         );
     }
