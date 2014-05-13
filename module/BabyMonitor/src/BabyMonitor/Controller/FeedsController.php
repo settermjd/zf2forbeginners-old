@@ -4,28 +4,20 @@ namespace BabyMonitor\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use ZendDiagnostics\Result\Success;
-use ZendDiagnostics\Result\Failure;
-use ZendDiagnostics\Result\Warning;
+use BabyMonitor\Tables\UserTable;
 
 class FeedsController extends AbstractActionController
 {
+    protected $_userTable;
+
+    public function __construct(UserTable $userTable)
+    {
+        $this->_userTable = $userTable;
+    }
 
     public function indexAction()
     {
-        $config = $this->getServiceLocator()->get('Config');
-
-        $configData = array(
-            'application_name' => $config['app']['name'],
-            'webmaster_name' => $config['app']['webmaster']['name'],
-            'webmaster_email' => $config['app']['webmaster']['email'],
-        );
-
-        $view = new ViewModel($configData);
-
-        $view->setVariables($configData);
-
-        return $view;
+        return new ViewModel();
     }
 
     public function searchAction()
@@ -42,7 +34,6 @@ class FeedsController extends AbstractActionController
     {
         return new ViewModel();
     }
-
 
 }
 

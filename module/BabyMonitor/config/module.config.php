@@ -20,8 +20,11 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'BabyMonitor\Controller\Feeds' => 'BabyMonitor\Controller\FeedsController'
+
         ),
+        'factories' => array(
+            'BabyMonitor\Controller\Feeds'  => 'BabyMonitor\Controller\\Factory\FeedsControllerFactory',
+        )
     ),
     'view_manager' => array(
         'template_map' => array(

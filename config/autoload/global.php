@@ -18,5 +18,14 @@ return array(
             'name' => 'Matthew Setter',
             'email' => 'matthew@maltblue.com'
         )
-    )
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+    'db' => array(
+        'driver'         => 'Pdo',
+        'dsn'            => 'mysql:dbname=zf24beginners;host=localhost'
+    ),
 );
