@@ -1,0 +1,5 @@
+---
+name: Application Migrations
+migrations_namespace: ApplicationMigrations
+table_name: migration_version
+migrations_directory: ./migrations
