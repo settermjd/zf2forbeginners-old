@@ -34,6 +34,16 @@ class Module
         );
     }
 
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'BabyMonitor\Tables\UserTable' => 'BabyMonitor\Tables\Factories\UserTableFactory',
+                'BabyMonitor\Tables\UserTableGateway' => 'BabyMonitor\Tables\Factories\UserTablegatewayFactory',
+            )
+        );
+    }
+
     public function getDiagnostics()
     {
         return array(
