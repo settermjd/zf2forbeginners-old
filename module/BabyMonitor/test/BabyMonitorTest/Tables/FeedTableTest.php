@@ -21,7 +21,7 @@ namespace BabyMonitor\test\BabyMonitorTest\Tables;
 use BabyMonitor\Models\FeedModel,
     BabyMonitor\Tables\FeedTable;
 use Zend\Db\ResultSet\ResultSet,
-    Zend\Db\Sql\Select;
+    Zend\Db\Sql\Where;
 use PHPUnit_Framework_TestCase;
 use \Mockery as m;
 
@@ -84,6 +84,94 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockFeedTable = new FeedTable($mockTableGateway);
 
         $this->assertEquals($resultSet, $mockFeedTable->fetchMostRecentFeeds($limit));
+    }
+
+    public function testFetchByDateRangeCanSearchBetweenDates()
+    {
+        $resultSet = new ResultSet();
+        $record = new FeedModel();
+        $record->exchangeArray($this->_recordData);
+        $where = new Where();
+
+        $resultSet->initialize(array($record));
+        $startDate = new \DateTime('2000-01-01');
+        $endDate = new \DateTime('2000-01-10');
+
+        $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
+        $mockSql->shouldReceive('select')->andReturn($mockSql);
+        $mockSql->shouldReceive('where')->with(array(
+            $where->greaterThanOrEqualTo(
+                'feedDateTime', $startDate->format(FeedTable::DATETIME_FORMAT)
+            ),
+            $where->lessThanOrEqualTo(
+                'feedDateTime', $endDate->format(FeedTable::DATETIME_FORMAT)
+            )
+        ))->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
+        $mockTableGateway->shouldReceive('selectWith')->times(1)->with($mockSql)->andReturn($resultSet);
+
+        $mockFeedTable = new FeedTable($mockTableGateway);
+
+        $this->assertEquals($resultSet, $mockFeedTable->fetchByDateRange($startDate, $endDate));
+    }
+
+    public function testFetchByDateRangeCanSearchUpToADate()
+    {
+        $resultSet = new ResultSet();
+        $record = new FeedModel();
+        $record->exchangeArray($this->_recordData);
+        $where = new Where();
+
+        $resultSet->initialize(array($record));
+        $endDate = new \DateTime('2000-01-01');
+
+        $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
+        $mockSql->shouldReceive('select')->andReturn($mockSql);
+        $mockSql->shouldReceive('where')->with(array(
+            $where->lessThanOrEqualTo(
+                'feedDateTime', $endDate->format(FeedTable::DATETIME_FORMAT)
+            )
+        ))->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
+        $mockTableGateway->shouldReceive('selectWith')->times(1)->with($mockSql)->andReturn($resultSet);
+
+        $mockFeedTable = new FeedTable($mockTableGateway);
+
+        $this->assertEquals($resultSet, $mockFeedTable->fetchByDateRange(null, $endDate));
+    }
+
+    public function testFetchByDateRangeCanSearchAfterToADate()
+    {
+        $resultSet = new ResultSet();
+        $record = new FeedModel();
+        $record->exchangeArray($this->_recordData);
+        $where = new Where();
+
+        $resultSet->initialize(array($record));
+        $startDate = new \DateTime('2000-01-01');
+
+        $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
+        $mockSql->shouldReceive('select')->andReturn($mockSql);
+        $mockSql->shouldReceive('where')->with(array(
+            $where->greaterThanOrEqualTo(
+                'feedDateTime', $startDate->format(FeedTable::DATETIME_FORMAT)
+            )
+        ))->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
+        $mockTableGateway->shouldReceive('selectWith')->times(1)->with($mockSql)->andReturn($resultSet);
+
+        $mockFeedTable = new FeedTable($mockTableGateway);
+
+        $this->assertEquals($resultSet, $mockFeedTable->fetchByDateRange($startDate));
     }
 
     public function testSaveWillInsertIfRecordHasNoFeedId()

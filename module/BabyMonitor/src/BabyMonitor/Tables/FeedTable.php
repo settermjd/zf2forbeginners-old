@@ -20,10 +20,13 @@ namespace BabyMonitor\Tables;
 
 use BabyMonitor\Models\FeedModel;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Where as WherePredicate;
 use Zend\Stdlib\ArrayObject;
 
 class FeedTable
 {
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+
     protected $tableGateway;
 
     public function __construct(TableGateway $tableGateway)
@@ -48,7 +51,7 @@ class FeedTable
 
     /**
      * Return X most recent feeds
-     * 
+     *
      * @param $limit
      * @return bool|null|\Zend\Db\ResultSet\ResultSetInterface
      */
@@ -64,6 +67,31 @@ class FeedTable
         }
 
         return false;
+    }
+
+    public function fetchByDateRange(\DateTime $startDate = null, \DateTime $endDate = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $where = new WherePredicate();
+        $whereClause = array();
+
+        if (!is_null($startDate)) {
+            $whereClause[] = $where->greaterThanOrEqualTo(
+                'feedDateTime', $startDate->format(self::DATETIME_FORMAT)
+            );
+        }
+
+        if (!is_null($endDate)) {
+            $whereClause[] = $where->lessThanOrEqualTo(
+                'feedDateTime', $endDate->format(self::DATETIME_FORMAT)
+            );
+        }
+
+        $select->where($whereClause)->order("feedDateTime DESC");
+
+        $results = $this->tableGateway->selectWith($select);
+
+        return $results;
     }
 
     public function save(FeedModel $feed)
