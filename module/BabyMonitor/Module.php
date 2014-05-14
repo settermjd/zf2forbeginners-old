@@ -4,6 +4,7 @@ namespace BabyMonitor;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\ModuleManager;
 use ZendDiagnostics\Check\DirWritable;
 use ZendDiagnostics\Check\ExtensionLoaded;
 use ZendDiagnostics\Check\ProcessRunning;
@@ -44,6 +45,16 @@ class Module
                 'BabyMonitor\Tables\FeedTableGateway' => 'BabyMonitor\Tables\Factories\FeedTablegatewayFactory',
             )
         );
+    }
+
+    public function init(ModuleManager $manager)
+    {
+        $events = $manager->getEventManager();
+        $sharedEvents = $events->getSharedManager();
+        $sharedEvents->attach(__NAMESPACE__, 'dispatch', function($e) {
+            $controller = $e->getTarget();
+            $controller->layout('layout/babymonitor');
+        }, 100);
     }
 
     public function getDiagnostics()
