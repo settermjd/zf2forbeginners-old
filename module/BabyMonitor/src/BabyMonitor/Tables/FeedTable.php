@@ -46,6 +46,26 @@ class FeedTable
         return false;
     }
 
+    /**
+     * Return X most recent feeds
+     * 
+     * @param $limit
+     * @return bool|null|\Zend\Db\ResultSet\ResultSetInterface
+     */
+    public function fetchMostRecentFeeds($limit)
+    {
+        if (!empty($limit)) {
+            $select = $this->tableGateway->getSql()->select();
+            $select->limit((int)$limit)
+                   ->order('feedDateTime DESC');
+            $results = $this->tableGateway->selectWith($select);
+
+            return $results;
+        }
+
+        return false;
+    }
+
     public function save(FeedModel $feed)
     {
         $data = array(
