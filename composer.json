@@ -13,7 +13,8 @@
 		"zendframework/zend-log": "2.3.*@dev",
         "zendframework/zftool": "dev-master",
         "zendframework/zenddiagnostics": "1.0.*@dev",
-        "slm/mail": "~1.4"
+        "slm/mail": "~1.4",
+        "enlitepro/enlite-monolog": "~1.1.0"
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
