@@ -17,6 +17,8 @@ class FeedsController extends AbstractActionController
 
     public function indexAction()
     {
+        $this->getServiceLocator()->get('BabyMonitor\Cache\Application');
+
         return new ViewModel();
     }
 

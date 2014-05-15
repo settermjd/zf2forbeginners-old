@@ -43,6 +43,7 @@ class Module
                 'BabyMonitor\Tables\UserTableGateway' => 'BabyMonitor\Tables\Factories\UserTablegatewayFactory',
                 'BabyMonitor\Tables\FeedTable' => 'BabyMonitor\Tables\Factories\FeedTableFactory',
                 'BabyMonitor\Tables\FeedTableGateway' => 'BabyMonitor\Tables\Factories\FeedTablegatewayFactory',
+                'BabyMonitor\Cache\Application' => 'BabyMonitor\Cache\CacheFactory',
             )
         );
     }
