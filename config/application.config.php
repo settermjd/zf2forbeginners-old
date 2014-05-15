@@ -8,7 +8,8 @@
 return array(
     'modules' => array(
         'Application',
-        'BabyMonitor'
+        'BabyMonitor',
+        'SlmMail'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
