@@ -9,6 +9,7 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
+        "lib-redis": "*",
         "zendframework/zendframework": "2.3.*",
 		"zendframework/zend-log": "2.3.*@dev",
         "zendframework/zftool": "dev-master",
