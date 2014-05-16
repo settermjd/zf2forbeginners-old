@@ -2,6 +2,7 @@
 
 namespace BabyMonitor\Controller;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use BabyMonitor\Tables\UserTable;
@@ -13,6 +14,20 @@ class FeedsController extends AbstractActionController
     public function __construct(UserTable $userTable)
     {
         $this->_userTable = $userTable;
+    }
+
+    public function setEventManager(EventManagerInterface $events)
+    {
+        parent::setEventManager($events);
+
+        $controller = $this;
+        $events->attach('dispatch', function ($e) use ($controller) {
+            $sm = $e->getApplication()->getServiceManager();
+            $auth = $sm->get('zfcuser_auth_service');
+            if (!$auth->hasIdentity()) {
+                return $controller->redirect()->toRoute('zfcuser/login');
+            }
+        }, 100); // execute before executing action logic
     }
 
     public function indexAction()

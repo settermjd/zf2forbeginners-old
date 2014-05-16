@@ -8,9 +8,12 @@
 return array(
     'modules' => array(
         'Application',
+        'ZfcBase',
+        'ZfcUser',
         'BabyMonitor',
         'SlmMail',
-        'EnliteMonolog'
+        'EnliteMonolog',
+        'EdpModuleLayouts'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
