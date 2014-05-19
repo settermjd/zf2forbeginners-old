@@ -29,14 +29,6 @@ class DeleteForm extends Form
         $this->setAttribute('method', 'post')
             ->setAttribute('class', 'form-horizontal');
 
-        // Add form elements
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Hidden',
-            'name' => 'userId',
-            'options' => array(),
-            'attributes' => array()
-        ));
-
         $this->add(array(
             'type' => 'Zend\Form\Element\Hidden',
             'name' => 'recordId',
