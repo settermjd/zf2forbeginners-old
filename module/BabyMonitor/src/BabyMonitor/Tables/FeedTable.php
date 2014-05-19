@@ -25,7 +25,7 @@ use Zend\Stdlib\ArrayObject;
 
 class FeedTable
 {
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const DATETIME_FORMAT = 'Y-m-d';
 
     protected $tableGateway;
 
@@ -77,7 +77,7 @@ class FeedTable
         if (!empty($limit)) {
             $select = $this->tableGateway->getSql()->select();
             $select->limit((int)$limit)
-                   ->order('feedDateTime DESC');
+                   ->order('feedDate DESC, feedTime DESC');
             $results = $this->tableGateway->selectWith($select);
 
             return $results->buffer();
@@ -94,17 +94,17 @@ class FeedTable
 
         if (!is_null($startDate)) {
             $whereClause[] = $where->greaterThanOrEqualTo(
-                'feedDateTime', $startDate->format(self::DATETIME_FORMAT)
+                'feedDate', $startDate->format(self::DATETIME_FORMAT)
             );
         }
 
         if (!is_null($endDate)) {
             $whereClause[] = $where->lessThanOrEqualTo(
-                'feedDateTime', $endDate->format(self::DATETIME_FORMAT)
+                'feedDate', $endDate->format(self::DATETIME_FORMAT)
             );
         }
 
-        $select->where($whereClause)->order("feedDateTime DESC");
+        $select->where($whereClause)->order("feedDate DESC, feedTime DESC");
 
         $results = $this->tableGateway->selectWith($select);
 
@@ -115,7 +115,8 @@ class FeedTable
     {
         $data = array(
             'userId' => $feed->userId,
-            'feedDateTime' => $feed->feedDateTime,
+            'feedDate' => $feed->feedDate,
+            'feedTime' => $feed->feedTime,
             'feedAmount' => $feed->feedAmount,
             'feedNotes' => $feed->feedNotes,
             'feedTemperature' => $feed->feedTemperature,

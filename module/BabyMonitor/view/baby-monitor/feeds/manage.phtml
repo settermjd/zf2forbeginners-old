@@ -15,7 +15,18 @@ echo $this->form()->openTag($form);
 
 <div class="form-group">
     <?php
-    $element = $form->get('feedDateTime');
+    $element = $form->get('feedDate');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formText($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedTime');
     echo $this->formLabel()->openTag();
     echo $this->formLabel($element);
     echo $this->formLabel()->closeTag();
