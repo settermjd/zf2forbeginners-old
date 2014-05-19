@@ -32,7 +32,7 @@ class ManageRecordForm extends Form
         // Add form elements
         $this->add(array(
             'type' => 'Zend\Form\Element\Hidden',
-            'name' => 'recordId',
+            'name' => 'feedId',
             'options' => array(),
             'attributes' => array()
         ));
@@ -46,10 +46,12 @@ class ManageRecordForm extends Form
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
-            'name' => 'feedDate',
-            'options' => array(),
+            'name' => 'feedDateTime',
+            'options' => array(
+                'label' => 'Date/Time:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'date & time'
             )
         ));
@@ -57,29 +59,35 @@ class ManageRecordForm extends Form
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
             'name' => 'feedAmount',
-            'options' => array(),
+            'options' => array(
+                'label' => 'Amount:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'amount'
             )
         ));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Textarea',
-            'name' => 'notes',
-            'options' => array(),
+            'name' => 'feedNotes',
+            'options' => array(
+                'label' => 'Notes:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'notes'
             )
         ));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
-            'name' => 'temperature',
-            'options' => array(),
+            'name' => 'feedTemperature',
+            'options' => array(
+                'label' => 'Temperature:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'temperature'
             )
         ));
@@ -91,7 +99,7 @@ class ManageRecordForm extends Form
                 'label' => 'Save'
             ),
             'attributes' => array(
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-default'
             )
         ));
 

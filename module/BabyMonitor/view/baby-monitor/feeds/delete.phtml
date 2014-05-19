@@ -1,3 +1,23 @@
-Module: BabyMonitor
-Controller: Feeds
-Action: delete
+<h1 class="page-header"><?php print $this->translate('Delete Feed'); ?></h1>
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a>
+    <li><a href="<?php print $this->url('feeds'); ?>">Feeds</a></li>
+    <li class="active">Delete Feed</li>
+</ul>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('feeds', array('action' => 'delete', 'class' => 'form-inline')));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+
+<div class="tab-content">
+    <p>Are you sure you want to delete the record with id: <?php print $form->get('recordId')->getValue(); ?></p>
+    <?php echo $this->formHidden($form->get('recordId')); ?>
+    <?php echo $this->formSubmit($form->get('submit')); ?>&nbsp;
+    <a href="<?php print $this->url('feeds', array()); ?>" class="btn">Cancel</a>
+</div>
+
+<?php echo $this->form()->closeTag(); ?>

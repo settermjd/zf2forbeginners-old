@@ -30,7 +30,9 @@ class FeedsControllerFactory implements FactoryInterface
     {
         $sm   = $serviceLocator->getServiceLocator();
         $userTable = $sm->get('BabyMonitor\Tables\UserTable');
-        $controller = new FeedsController($userTable);
+        $feedTable = $sm->get('BabyMonitor\Tables\FeedTable');
+        $cache = $sm->get('BabyMonitor\Cache\Application');
+        $controller = new FeedsController($userTable, $feedTable, $cache);
 
         return $controller;
     }
