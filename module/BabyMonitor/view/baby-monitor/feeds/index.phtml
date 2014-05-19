@@ -1,1 +1,42 @@
-<h1 class="page-header">Feeds Dashboard</h1>
+<h1 class="page-header"><?php echo $this->translate('Feeds Dashboard'); ?></h1>
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a>
+    <li><a href="<?php print $this->url('feeds'); ?>">Feeds</a></li>
+    <li class="active">All Feeds</li>
+</ul>
+
+<?php if (count($this->paginator)) : ?>
+<p>Here are the last <?php print $feedCount; ?> feeds, from latest to oldest.</p>
+<?php endif; ?>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th><?php echo $this->translate('Date/Time'); ?></th>
+        <th><?php echo $this->translate('Amount'); ?></th>
+        <th><?php echo $this->translate('Temperature'); ?></th>
+        <th><?php echo $this->translate('Notes'); ?></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php if (count($this->paginator)) : ?>
+    <?php echo $this->partialLoop('babymonitor/feeds/results/default', $this->paginator); ?>
+    <?php else : ?>
+        <tr>
+            <td colspan="6">
+                No available records.
+                <a href="<?php print $this->url('feeds', array('action' => 'manage', array())); ?>"
+                   title="add the first record">Care to add one?</a>
+            </td>
+        </tr>
+    <?php endif; ?>
+    </tbody>
+</table>
+
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'babymonitor/feeds/paginator/default',
+    array('routeParams' => array())
+) ?>
