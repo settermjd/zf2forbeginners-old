@@ -43,11 +43,11 @@ class DeleteForm extends Form
                 'label' => 'Delete'
             ),
             'attributes' => array(
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-danger'
             )
         ));
 
-        $this->get('submit')->setValue('Delete');
+        $this->get('submit')->setValue('DELETE The Record');
 
     }
 }

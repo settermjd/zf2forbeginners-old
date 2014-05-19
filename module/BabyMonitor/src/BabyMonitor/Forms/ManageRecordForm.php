@@ -51,7 +51,7 @@ class ManageRecordForm extends Form
                 'label' => 'Date/Time:'
             ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'date & time'
             )
         ));
@@ -59,9 +59,11 @@ class ManageRecordForm extends Form
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
             'name' => 'feedAmount',
-            'options' => array(),
+            'options' => array(
+                'label' => 'Amount:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'amount'
             )
         ));
@@ -73,7 +75,7 @@ class ManageRecordForm extends Form
                 'label' => 'Notes:'
             ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'notes'
             )
         ));
@@ -85,7 +87,7 @@ class ManageRecordForm extends Form
                 'label' => 'Temperature:'
             ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'temperature'
             )
         ));
@@ -97,7 +99,7 @@ class ManageRecordForm extends Form
                 'label' => 'Save'
             ),
             'attributes' => array(
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-default'
             )
         ));
 

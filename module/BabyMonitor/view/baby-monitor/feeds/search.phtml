@@ -1,3 +1,38 @@
-Module: BabyMonitor
-Controller: Feeds
-Action: search
+<h1 class="page-header"><?php print $this->translate('Search Feeds'); ?></h1>
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a>
+    <li><a href="<?php print $this->url('feeds'); ?>">Feeds</a></li>
+    <li class="active">Search Feeds</li>
+</ul>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('feeds', array('action' => 'search', 'class' => 'form-inline')));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+
+<div class="tab-content">
+
+    <div class="form-group">
+        <?php
+        $element = $form->get('startDate');
+        echo $this->formText($element);
+        echo $this->formElementErrors($element);
+        ?>
+    </div>
+
+    <div class="form-group">
+        <?php
+        $element = $form->get('endDate');
+        echo $this->formText($element);
+        echo $this->formElementErrors($element);
+        ?>
+    </div>
+
+    <?php echo $this->formSubmit($form->get('submit')); ?>
+
+</div>
+
+<?php echo $this->form()->closeTag(); ?>

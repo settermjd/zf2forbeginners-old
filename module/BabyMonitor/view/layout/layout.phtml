@@ -23,10 +23,11 @@
 
     <!-- Scripts -->
     <?php $this->headScript()
-        ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+        ->prependFile($this->basePath() . '/js/bootstrap.js')
         ->prependFile($this->basePath() . '/js/jquery.min.js')
-        ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-        ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+        ->appendFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+        ->appendFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+        ->appendFile($this->basePath() . '/js/app.js')
     ; ?>
 
 </head>
@@ -45,7 +46,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><?php echo $this->translate('Help')?></a></li>
+                <li><a href="#" data-toggle="modal" data-target=".bs-example-modal"><?php echo $this->translate('Help')?></a></li>
                 <li><a href="/user/logout"><?php echo $this->translate('Logout'); ?></a></li>
             </ul>
         </div>
@@ -58,6 +59,10 @@
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="<?php print $this->url('feeds'); ?>"
                         ><?php echo $this->translate('Feeds'); ?></a></li>
+                <li><a href="<?php print $this->url('feeds', array('action' => 'manage')); ?>"
+                        ><?php echo $this->translate('Add Feed'); ?></a></li>
+                <li><a href="<?php print $this->url('feeds', array('action' => 'search')); ?>"
+                        ><?php echo $this->translate('Search Feeds'); ?></a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -65,6 +70,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bs-example-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Application Help</h4>
+            </div>
+            <div class="modal-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae interdum felis, non eleifend turpis. Curabitur tristique id purus mollis consectetur. Nulla eget nibh lectus. Fusce ut sodales augue, at interdum urna. Sed in mollis nisi, sit amet eleifend dolor. Proin molestie mollis luctus. Nam ac elit id ante condimentum volutpat. Suspendisse cursus quis massa non dictum. Aenean congue velit sit amet urna consequat, eu ornare odio congue. Ut vestibulum tortor non convallis bibendum. Sed ac mauris et urna tempor suscipit. Nulla viverra dui a leo gravida, semper cursus urna vulputate.</p>
+
+                <p>Donec volutpat ipsum a eros viverra, vel imperdiet lectus ornare. Pellentesque vitae auctor ipsum, et dignissim magna. In sed ligula nec dolor feugiat fringilla. Sed venenatis libero non faucibus venenatis. In facilisis libero egestas convallis semper. Suspendisse in odio ac lorem egestas tincidunt. Mauris id sapien id augue varius accumsan. Integer congue quam et condimentum ultricies. Proin vitae cursus turpis, non tristique mi. Maecenas pellentesque augue ut nisl faucibus euismod.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <?php echo $this->inlineScript() ?>
 <?php echo $this->headScript(); ?>
