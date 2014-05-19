@@ -99,6 +99,10 @@ class FeedsController extends AbstractActionController
                     if (!is_null($this->_cache)) {
                         $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                     }
+                    // trigger the deleted event
+                    $this->getEventManager()->trigger('Feed.Delete', $this, array(
+                        'feedData' => $form->getInputFilter()->getValues()
+                    ));
                 }
                 return $this->redirect()->toRoute('feeds', array());
             }
@@ -127,9 +131,14 @@ class FeedsController extends AbstractActionController
                 $feed = new FeedModel();
                 $feed->exchangeArray($form->getData());
                 $this->_feedTable->save($feed);
+
                 if (!is_null($this->_cache)) {
                     $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                 }
+
+                $this->getEventManager()->trigger('Feed.Modify', $this, array(
+                    'feedData' => $feed
+                ));
 
                 return $this->redirect()->toRoute('feeds', array());
             }
