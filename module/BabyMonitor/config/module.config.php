@@ -48,4 +48,9 @@ return array(
             'zfcuser' => __DIR__ . '/../view',
         ),
     ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'noFeedsAvailable' => 'BabyMonitor\View\Helper\NoFeedsAvailable',
+        )
+    ),
 );

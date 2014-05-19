@@ -28,9 +28,7 @@
     <?php else : ?>
         <tr>
             <td colspan="6">
-                No available records.
-                <a href="<?php print $this->url('feeds', array('action' => 'manage', array())); ?>"
-                   title="add the first record">Care to add one?</a>
+                <?php print $this->noFeedsAvailable(); ?>
             </td>
         </tr>
     <?php endif; ?>
