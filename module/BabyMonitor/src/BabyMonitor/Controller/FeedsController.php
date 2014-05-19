@@ -99,9 +99,11 @@ class FeedsController extends AbstractActionController
                     if (!is_null($this->_cache)) {
                         $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                     }
+                    $feed = new FeedModel();
+                    $feed->exchangeArray($form->getData());
                     // trigger the deleted event
                     $this->getEventManager()->trigger('Feed.Delete', $this, array(
-                        'feedData' => $form->getInputFilter()->getValues()
+                        'feedData' => $feed
                     ));
                 }
                 return $this->redirect()->toRoute('feeds', array());
