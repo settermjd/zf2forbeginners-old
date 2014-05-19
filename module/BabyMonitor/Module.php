@@ -9,6 +9,7 @@ use ZendDiagnostics\Check\DirWritable;
 use ZendDiagnostics\Check\ExtensionLoaded;
 use ZendDiagnostics\Check\ProcessRunning;
 use ZendDiagnostics\Check\PhpVersion;
+use BabyMonitor\Notify\Feed\EmailNotifier;
 
 class Module
 {
@@ -17,6 +18,32 @@ class Module
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $sem = $eventManager->getSharedManager();
+
+        /*
+         * Add a series of events covering the feed lifecycle
+         */
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Create',
+            function($e) use($serviceManager) {
+                $notifier = $serviceManager->get('BabyMonitor\Notify\Feed\EmailNotifier');
+                $notifier->notify($e->getParams()['feedData'], EmailNotifier::NOTIFY_CREATE);
+            }
+        );
+
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Modify',
+            function($e) use($serviceManager) {
+                $notifier = $serviceManager->get('BabyMonitor\Notify\Feed\EmailNotifier');
+                $notifier->notify($e->getParams()['feedData'], EmailNotifier::NOTIFY_UPDATE);
+            }
+        );
+
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Delete',
+            function($e) use($serviceManager) {
+                $notifier = $serviceManager->get('BabyMonitor\Notify\Feed\EmailNotifier');
+                $notifier->notify($e->getParams()['feedData'], EmailNotifier::NOTIFY_DELETE);
+            }
+        );
     }
 
     public function getConfig()
