@@ -34,16 +34,33 @@ class FeedTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchByUserId($feedId)
+    public function fetchById($feedId)
     {
         if (!empty($feedId)) {
             $select = $this->tableGateway->getSql()->select();
-            $select->where(array("UserId" => (int)$feedId));
+            $select->where(array("feedId" => (int)$feedId));
             $results = $this->tableGateway->selectWith($select);
 
             if ($results->count() == 1) {
                 return $results->current();
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Attempts to delete a feed item
+     *
+     * @param $feedId
+     * @return bool|int
+     */
+    public function delete($feedId)
+    {
+        if (!empty($feedId)) {
+            return $this->tableGateway->delete(array(
+                "feedId" => (int)$feedId
+            ));
         }
 
         return false;
@@ -63,7 +80,7 @@ class FeedTable
                    ->order('feedDateTime DESC');
             $results = $this->tableGateway->selectWith($select);
 
-            return $results;
+            return $results->buffer();
         }
 
         return false;

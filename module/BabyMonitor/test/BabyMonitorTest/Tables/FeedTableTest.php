@@ -43,17 +43,17 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testFetchByUserId()
+    public function testFetchById()
     {
         $resultSet = new ResultSet();
         $record = new FeedModel();
         $record->exchangeArray($this->_recordData);
-        $userId = 21;
+        $feedId = 21;
         $resultSet->initialize(array($record));
 
         $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
         $mockSql->shouldReceive('select')->andReturn($mockSql);
-        $mockSql->shouldReceive('where')->with(array('UserId' => $userId))->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('where')->with(array('feedId' => $feedId))->times(1)->andReturn($mockSql);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -61,7 +61,16 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
 
         $mockFeedTable = new FeedTable($mockTableGateway);
 
-        $this->assertEquals($record, $mockFeedTable->fetchByUserId($userId));
+        $this->assertEquals($record, $mockFeedTable->fetchById($feedId));
+    }
+
+    public function testCanDeleteById()
+    {
+        $feedId = 21;
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('delete')->with(array('feedId' => $feedId))->andReturn(1);
+        $mockFeedTable = new FeedTable($mockTableGateway);
+        $this->assertEquals(true, $mockFeedTable->delete($feedId));
     }
 
     public function testFetchMostRecentFeeds()
