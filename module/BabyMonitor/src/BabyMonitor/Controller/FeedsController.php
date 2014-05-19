@@ -89,13 +89,13 @@ class FeedsController extends AbstractActionController
         $formManager = $this->serviceLocator->get('FormElementManager');
         $form = $formManager->get('BabyMonitor\Forms\DeleteForm');
         $form->setData(array(
-            'recordId' => (int)$this->params()->fromRoute('id')
+            'feedId' => (int)$this->params()->fromRoute('id')
         ));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                if ($this->_feedTable->delete($form->getData()['recordId'])) {
+                if ($this->_feedTable->delete($form->getInputFilter()->getValue('feedId'))) {
                     if (!is_null($this->_cache)) {
                         $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                     }

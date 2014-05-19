@@ -31,7 +31,7 @@ class DeleteForm extends Form
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Hidden',
-            'name' => 'recordId',
+            'name' => 'feedId',
             'options' => array(),
             'attributes' => array()
         ));

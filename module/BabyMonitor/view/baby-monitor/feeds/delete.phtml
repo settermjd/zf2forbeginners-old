@@ -14,8 +14,8 @@ echo $this->form()->openTag($form);
 ?>
 
 <div class="tab-content">
-    <p>Are you sure you want to delete the record with id: <?php print $form->get('recordId')->getValue(); ?></p>
-    <?php echo $this->formHidden($form->get('recordId')); ?>
+    <p>Are you sure you want to delete the record with id: <?php print $form->get('feedId')->getValue(); ?></p>
+    <?php echo $this->formHidden($form->get('feedId')); ?>
     <?php echo $this->formSubmit($form->get('submit')); ?>&nbsp;
     <a href="<?php print $this->url('feeds', array()); ?>" class="btn">Cancel</a>
 </div>
