@@ -46,13 +46,25 @@ class ManageRecordForm extends Form
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
-            'name' => 'feedDateTime',
+            'name' => 'feedDate',
             'options' => array(
-                'label' => 'Date/Time:'
+                'label' => 'Date:'
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'placeholder' => 'date & time'
+                'placeholder' => 'feed date'
+            )
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Text',
+            'name' => 'feedTime',
+            'options' => array(
+                'label' => 'Time:'
+            ),
+            'attributes' => array(
+                'class' => 'form-control',
+                'placeholder' => 'feed time'
             )
         ));
 
