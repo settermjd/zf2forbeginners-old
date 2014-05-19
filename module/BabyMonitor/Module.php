@@ -44,6 +44,7 @@ class Module
                 'BabyMonitor\Tables\FeedTable' => 'BabyMonitor\Tables\Factories\FeedTableFactory',
                 'BabyMonitor\Tables\FeedTableGateway' => 'BabyMonitor\Tables\Factories\FeedTablegatewayFactory',
                 'BabyMonitor\Cache\Application' => 'BabyMonitor\Cache\CacheFactory',
+                'BabyMonitor\Notify\Feed\EmailNotifier' => 'BabyMonitor\Notify\Feed\Factory\EmailNotifierFactory',
             )
         );
     }
