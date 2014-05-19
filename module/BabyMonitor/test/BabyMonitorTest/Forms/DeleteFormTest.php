@@ -32,10 +32,7 @@ class DeleteFormTest extends BasicFormTest
         $this->_form = $this->_getForm();
 
         $this->_formFields = array(
-            'userId' => array(
-                'type' => 'hidden',
-            ),
-            'recordId' => array(
+            'feedId' => array(
                 'type' => 'hidden',
             ),
         );

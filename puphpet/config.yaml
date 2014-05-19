@@ -118,6 +118,7 @@ php:
             - cli
             - intl
             - mcrypt
+            - redis
         pear: {  }
         pecl:
             - memcache
@@ -187,7 +188,7 @@ mongodb:
         port: '27017'
     databases: {  }
 redis:
-    install: 0
+    install: '1'
     settings:
         conf_port: '6379'
 beanstalkd:

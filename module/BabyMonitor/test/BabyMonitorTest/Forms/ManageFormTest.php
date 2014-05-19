@@ -32,13 +32,13 @@ class ManageFormTest extends BasicFormTest
         $this->_form = $this->_getForm();
 
         $this->_formFields = array(
-            'recordId' => array(
+            'feedId' => array(
                 'type' => 'hidden',
             ),
             'userId' => array(
                 'type' => 'hidden',
             ),
-            'feedDate' => array(
+            'feedDateTime' => array(
                 'type' => 'text',
                 'placeholder' => 'date & time'
             ),
@@ -46,11 +46,11 @@ class ManageFormTest extends BasicFormTest
                 'type' => 'text',
                 'placeholder' => 'amount'
             ),
-            'notes' => array(
+            'feedNotes' => array(
                 'type' => 'textarea',
                 'placeholder' => 'notes'
             ),
-            'temperature' => array(
+            'feedTemperature' => array(
                 'type' => 'text',
                 'placeholder' => 'temperature'
             ),

@@ -25,7 +25,7 @@ use Zend\Stdlib\ArrayObject;
 
 class FeedTable
 {
-    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const DATETIME_FORMAT = 'Y-m-d';
 
     protected $tableGateway;
 
@@ -34,16 +34,33 @@ class FeedTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function fetchByUserId($feedId)
+    public function fetchById($feedId)
     {
         if (!empty($feedId)) {
             $select = $this->tableGateway->getSql()->select();
-            $select->where(array("UserId" => (int)$feedId));
+            $select->where(array("feedId" => (int)$feedId));
             $results = $this->tableGateway->selectWith($select);
 
             if ($results->count() == 1) {
                 return $results->current();
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Attempts to delete a feed item
+     *
+     * @param $feedId
+     * @return bool|int
+     */
+    public function delete($feedId)
+    {
+        if (!empty($feedId)) {
+            return $this->tableGateway->delete(array(
+                "feedId" => (int)$feedId
+            ));
         }
 
         return false;
@@ -60,10 +77,10 @@ class FeedTable
         if (!empty($limit)) {
             $select = $this->tableGateway->getSql()->select();
             $select->limit((int)$limit)
-                   ->order('feedDateTime DESC');
+                   ->order('feedDate DESC, feedTime DESC');
             $results = $this->tableGateway->selectWith($select);
 
-            return $results;
+            return $results->buffer();
         }
 
         return false;
@@ -77,17 +94,17 @@ class FeedTable
 
         if (!is_null($startDate)) {
             $whereClause[] = $where->greaterThanOrEqualTo(
-                'feedDateTime', $startDate->format(self::DATETIME_FORMAT)
+                'feedDate', $startDate->format(self::DATETIME_FORMAT)
             );
         }
 
         if (!is_null($endDate)) {
             $whereClause[] = $where->lessThanOrEqualTo(
-                'feedDateTime', $endDate->format(self::DATETIME_FORMAT)
+                'feedDate', $endDate->format(self::DATETIME_FORMAT)
             );
         }
 
-        $select->where($whereClause)->order("feedDateTime DESC");
+        $select->where($whereClause)->order("feedDate DESC, feedTime DESC");
 
         $results = $this->tableGateway->selectWith($select);
 
@@ -98,7 +115,8 @@ class FeedTable
     {
         $data = array(
             'userId' => $feed->userId,
-            'feedDateTime' => $feed->feedDateTime,
+            'feedDate' => $feed->feedDate,
+            'feedTime' => $feed->feedTime,
             'feedAmount' => $feed->feedAmount,
             'feedNotes' => $feed->feedNotes,
             'feedTemperature' => $feed->feedTemperature,

@@ -15,7 +15,8 @@
         "zendframework/zftool": "dev-master",
         "zendframework/zenddiagnostics": "1.0.*@dev",
         "slm/mail": "~1.4",
-        "enlitepro/enlite-monolog": "~1.1.0"
+        "enlitepro/enlite-monolog": "~1.1.0",
+        "zf-commons/zfc-user": "dev-master",
     },
     "require-dev": {
         "mockery/mockery": "dev-master",

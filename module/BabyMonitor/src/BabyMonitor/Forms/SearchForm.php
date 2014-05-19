@@ -27,15 +27,17 @@ class SearchForm extends Form
         parent::__construct('Search');
 
         $this->setAttribute('method', 'post')
-             ->setAttribute('class', 'form-horizontal');
+             ->setAttribute('class', 'form-inline');
 
         // Add form elements
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
             'name' => 'startDate',
-            'options' => array(),
+            'options' => array(
+                'label' => 'Start Date:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'search from'
             )
         ));
@@ -43,9 +45,11 @@ class SearchForm extends Form
         $this->add(array(
             'type' => 'Zend\Form\Element\Text',
             'name' => 'endDate',
-            'options' => array(),
+            'options' => array(
+                'label' => 'End Date:'
+            ),
             'attributes' => array(
-                'class' => 'input-block-level',
+                'class' => 'form-control',
                 'placeholder' => 'search to'
             )
         ));

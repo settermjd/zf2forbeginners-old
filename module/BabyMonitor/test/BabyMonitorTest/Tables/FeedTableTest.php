@@ -32,7 +32,8 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
     protected $_recordData =  array(
         'userId' => 21,
         'feedId'  => 12,
-        'feedDateTime'  => "2012-01-01 12:00:00",
+        'feedDate'  => "2012-01-01",
+        'feedTime'  => "12:00:00",
         'feedAmount'  => 21.04,
         'feedTemperature'  => 14,
         'feedNotes' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis vitae nisi eget suscipit. Suspendisse condimentum sapien purus, eu porta dolor elementum vel. Praesent quis nunc dolor. Phasellus in luctus lorem, a tempus velit. Proin varius magna urna, id accumsan ante eleifend eleifend. Nullam id nulla ligula. Praesent id felis vel felis tempor vestibulum. Nulla pretium, tortor eu placerat suscipit, purus ipsum aliquet eros, non dictum mi odio in odio. Morbi ac porta enim. In non purus at dui consequat rhoncus. Nullam libero nisl, rutrum non mi vel, molestie gravida lectus. Sed laoreet vitae sem at tincidunt. Etiam volutpat nunc ut nunc fringilla, at imperdiet urna congue. Sed lacinia sit amet leo id vehicula. Aenean interdum purus id gravida varius.",
@@ -43,17 +44,17 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    public function testFetchByUserId()
+    public function testFetchById()
     {
         $resultSet = new ResultSet();
         $record = new FeedModel();
         $record->exchangeArray($this->_recordData);
-        $userId = 21;
+        $feedId = 21;
         $resultSet->initialize(array($record));
 
         $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
         $mockSql->shouldReceive('select')->andReturn($mockSql);
-        $mockSql->shouldReceive('where')->with(array('UserId' => $userId))->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('where')->with(array('feedId' => $feedId))->times(1)->andReturn($mockSql);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -61,7 +62,16 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
 
         $mockFeedTable = new FeedTable($mockTableGateway);
 
-        $this->assertEquals($record, $mockFeedTable->fetchByUserId($userId));
+        $this->assertEquals($record, $mockFeedTable->fetchById($feedId));
+    }
+
+    public function testCanDeleteById()
+    {
+        $feedId = 21;
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('delete')->with(array('feedId' => $feedId))->andReturn(1);
+        $mockFeedTable = new FeedTable($mockTableGateway);
+        $this->assertEquals(true, $mockFeedTable->delete($feedId));
     }
 
     public function testFetchMostRecentFeeds()
@@ -75,7 +85,7 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
         $mockSql->shouldReceive('select')->andReturn($mockSql);
         $mockSql->shouldReceive('limit')->with($limit)->times(1)->andReturn($mockSql);
-        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDate DESC, feedTime DESC")->andReturn($resultSet);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -101,13 +111,13 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockSql->shouldReceive('select')->andReturn($mockSql);
         $mockSql->shouldReceive('where')->with(array(
             $where->greaterThanOrEqualTo(
-                'feedDateTime', $startDate->format(FeedTable::DATETIME_FORMAT)
+                'feedDate', $startDate->format(FeedTable::DATETIME_FORMAT)
             ),
             $where->lessThanOrEqualTo(
-                'feedDateTime', $endDate->format(FeedTable::DATETIME_FORMAT)
+                'feedDate', $endDate->format(FeedTable::DATETIME_FORMAT)
             )
         ))->times(1)->andReturn($mockSql);
-        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDate DESC, feedTime DESC")->andReturn($resultSet);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -132,10 +142,10 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockSql->shouldReceive('select')->andReturn($mockSql);
         $mockSql->shouldReceive('where')->with(array(
             $where->lessThanOrEqualTo(
-                'feedDateTime', $endDate->format(FeedTable::DATETIME_FORMAT)
+                'feedDate', $endDate->format(FeedTable::DATETIME_FORMAT)
             )
         ))->times(1)->andReturn($mockSql);
-        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDate DESC, feedTime DESC")->andReturn($resultSet);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -160,10 +170,10 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockSql->shouldReceive('select')->andReturn($mockSql);
         $mockSql->shouldReceive('where')->with(array(
             $where->greaterThanOrEqualTo(
-                'feedDateTime', $startDate->format(FeedTable::DATETIME_FORMAT)
+                'feedDate', $startDate->format(FeedTable::DATETIME_FORMAT)
             )
         ))->times(1)->andReturn($mockSql);
-        $mockSql->shouldReceive('order')->times(1)->with("feedDateTime DESC")->andReturn($resultSet);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDate DESC, feedTime DESC")->andReturn($resultSet);
 
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
@@ -186,7 +196,8 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
             ->method('insert')
             ->with(array(
                 'userId' => 21,
-                'feedDateTime'  => "2012-01-01 12:00:00",
+                'feedDate'  => "2012-01-01",
+                'feedTime'  => "12:00:00",
                 'feedAmount'  => 21.04,
                 'feedTemperature'  => 14,
                 'feedNotes' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis vitae nisi eget suscipit. Suspendisse condimentum sapien purus, eu porta dolor elementum vel. Praesent quis nunc dolor. Phasellus in luctus lorem, a tempus velit. Proin varius magna urna, id accumsan ante eleifend eleifend. Nullam id nulla ligula. Praesent id felis vel felis tempor vestibulum. Nulla pretium, tortor eu placerat suscipit, purus ipsum aliquet eros, non dictum mi odio in odio. Morbi ac porta enim. In non purus at dui consequat rhoncus. Nullam libero nisl, rutrum non mi vel, molestie gravida lectus. Sed laoreet vitae sem at tincidunt. Etiam volutpat nunc ut nunc fringilla, at imperdiet urna congue. Sed lacinia sit amet leo id vehicula. Aenean interdum purus id gravida varius."));
@@ -209,7 +220,8 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
         $mockTableGateway->shouldReceive('update')->with(array(
             'userId' => 21,
-            'feedDateTime'  => "2012-01-01 12:00:00",
+            'feedDate'  => "2012-01-01",
+            'feedTime'  => "12:00:00",
             'feedAmount'  => 21.04,
             'feedTemperature'  => 14,
             'feedNotes' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis vitae nisi eget suscipit. Suspendisse condimentum sapien purus, eu porta dolor elementum vel. Praesent quis nunc dolor. Phasellus in luctus lorem, a tempus velit. Proin varius magna urna, id accumsan ante eleifend eleifend. Nullam id nulla ligula. Praesent id felis vel felis tempor vestibulum. Nulla pretium, tortor eu placerat suscipit, purus ipsum aliquet eros, non dictum mi odio in odio. Morbi ac porta enim. In non purus at dui consequat rhoncus. Nullam libero nisl, rutrum non mi vel, molestie gravida lectus. Sed laoreet vitae sem at tincidunt. Etiam volutpat nunc ut nunc fringilla, at imperdiet urna congue. Sed lacinia sit amet leo id vehicula. Aenean interdum purus id gravida varius."), array('feedId' => $feedId))->andReturn($this->_recordData);

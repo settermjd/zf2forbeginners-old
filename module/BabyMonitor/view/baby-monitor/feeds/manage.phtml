@@ -1,3 +1,79 @@
-Module: BabyMonitor
-Controller: Feeds
-Action: manage
+<h1 class="page-header"><?php print $this->translate('Manage Feeds'); ?></h1>
+
+<ul class="breadcrumb">
+    <li><a href="/">Home</a>
+    <li><a href="<?php print $this->url('feeds'); ?>">Feeds</a></li>
+    <li class="active">Manage Feeds</li>
+</ul>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('feeds', array('action' => 'manage')));
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedDate');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formText($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedTime');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formText($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedAmount');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formText($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedTemperature');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formText($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<div class="form-group">
+    <?php
+    $element = $form->get('feedNotes');
+    echo $this->formLabel()->openTag();
+    echo $this->formLabel($element);
+    echo $this->formLabel()->closeTag();
+    echo $this->formTextarea($element);
+    echo $this->formElementErrors($element);
+    ?>
+</div>
+
+<?php echo $this->formHidden($form->get('feedId'));?>
+<?php echo $this->formSubmit($form->get('submit')); ?>&nbsp;
+<a href="<?php print $this->url('feeds'); ?>" class="btn"
+   title="<?php print $this->translate($this->cancelTitle); ?>"
+    ><?php print $this->translate('Cancel'); ?></a>
+
+
+<?php echo $this->form()->closeTag(); ?>
+
