@@ -37,6 +37,7 @@ class ManageFeedInputFilter extends InputFilter
      */
     protected $_requiredFields = array(
         "feedDate",
+        "feedTime",
         "feedAmount",
     );
 
@@ -46,7 +47,6 @@ class ManageFeedInputFilter extends InputFilter
      * @var array
      */
     protected $_optionalFields = array(
-        "feedTime",
         "feedId",
         "userId",
         "feedTemperature",

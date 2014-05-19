@@ -54,7 +54,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
                 array(
                     'userId' => 1,
                     'feedId' => 1,
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '21:00:00',
                     'feedAmount' => 180,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -63,7 +64,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '08:00:01',
                     'feedAmount' => 180,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -73,7 +75,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                     'feedId' => 1,
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '08:00:01',
                     'feedAmount' => 180,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -84,7 +87,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
                 array(
                     'userId' => 1,
                     'feedId' => 1,
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '08:00:01',
                     'feedAmount' => 180,
                     'feedTemperature' => 21,
                     'feedNotes' => "lipsu text",
@@ -93,7 +97,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'feedDateTime' => '',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '',
                     'feedAmount' => 180,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -102,7 +107,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '',
+                    'feedTime' => '08:00:01',
                     'feedAmount' => 0,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -111,7 +117,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-01-01',
+                    'feedTime' => '08',
                     'feedAmount' => "",
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
@@ -120,7 +127,8 @@ class ManageFeedInputFilterTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'feedDateTime' => '2014-01-01',
+                    'feedDate' => '2014-',
+                    'feedTime' => '08:00:01',
                     'feedAmount' => -1,
                     'feedTemperature' => 21.04,
                     'feedNotes' => "",
