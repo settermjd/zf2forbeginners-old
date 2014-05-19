@@ -19,6 +19,29 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $sem = $eventManager->getSharedManager();
+
+        /*
+         * Add a series of events covering the feed lifecycle
+         */
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Create',
+            function($e) use($serviceManager) {
+
+            }
+        );
+
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Update',
+            function($e) use($serviceManager) {
+
+            }
+        );
+
+        $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Delete',
+            function($e) use($serviceManager) {
+
+            }
+        );
     }
 
     public function getConfig()
