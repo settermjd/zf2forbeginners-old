@@ -31,7 +31,7 @@ class NoFeedsAvailable extends AbstractHelper
     public function __invoke()
     {
         return sprintf(
-            "%s <a href='' title='%s'>%s</a>",
+            "%s <a href='%s' title='%s'>%s</a>",
             $this->view->translate("No available records."),
             $this->view->url('feeds', array('action' => 'manage')),
             $this->view->translate("add the first record"),
