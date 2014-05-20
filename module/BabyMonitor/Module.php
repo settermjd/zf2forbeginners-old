@@ -22,7 +22,7 @@ class Module
         $sem = $eventManager->getSharedManager();
 
         /*
-         * Add a series of events covering the feed lifecycle
+         * Add a series of events covering the feed lifecycle (create, modify, delete)
          */
         $sem->attach('BabyMonitor\Controller\FeedsController', 'Feed.Create',
             function($e) use($serviceManager) {
@@ -86,6 +86,11 @@ class Module
         }, 100);
     }
 
+    /**
+     * Covers the specific diagnostic checks for the module.
+     *
+     * @return array
+     */
     public function getDiagnostics()
     {
         return array(

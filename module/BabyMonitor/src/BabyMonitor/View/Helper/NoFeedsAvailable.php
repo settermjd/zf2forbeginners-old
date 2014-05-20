@@ -2,16 +2,12 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Short description for file
+ * Displays a link to the manage action of the feeds
  *
- * Long description for file (if any)...
- *
- * PHP version 5.4
- *
- * @category   CategoryName
- * @package    PackageName
+ * @category   BabyMonitor
+ * @package    View\Helper
  * @author     Matthew Setter <matthew@maltblue.com>
- * @copyright  2014 Client/Author
+ * @copyright  2014 Matthew Setter <matthew@maltblue.com>
  * @see        Enter if required
  * @since      File available since Release/Tag:
  */

@@ -2,25 +2,19 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Short description for file
+ * Initialises the FeedsController using the FactoryInterface
  *
- * Long description for file (if any)...
- *
- * PHP version 5.4
- *
- * @category   CategoryName
- * @package    PackageName
+ * @category   BabyMonitor
+ * @package    Controller\Factory
  * @author     Matthew Setter <matthew@maltblue.com>
- * @copyright  2014 Client/Author
- * @see        Enter if required
- * @since      File available since Release/Tag:
+ * @copyright  2014 Matthew Setter <matthew@maltblue.com>
+ * @since      File available since Release/Tag: 1.0
  */
 
 namespace BabyMonitor\Controller\Factory;
 
 use Zend\ServiceManager\FactoryInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
-    Zend\Cache\Exception\ExtensionNotLoadedException,
     Zend\ServiceManager\Exception\ServiceNotCreatedException,
     BabyMonitor\Controller\FeedsController;
 
