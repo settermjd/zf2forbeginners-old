@@ -14,12 +14,34 @@ use Zend\Paginator\Adapter\ArrayAdapter;
 
 class FeedsController extends AbstractActionController
 {
+    /**
+     * @var int default amount of feeds to display, max, per/page
+     */
     const DEFAULT_FEED_COUNT = 20;
+
+    /**
+     * @var int
+     */
     const DEFAULT_RECORDS_PER_PAGE = 20;
+
+    /**
+     * default cache key for recent feeds
+     */
     const KEY_ALL_RESULTS = "recent_feeds";
 
+    /**
+     * @var UserTable
+     */
     protected $_userTable;
+
+    /**
+     * @var FeedTable
+     */
     protected $_feedTable;
+
+    /**
+     * @var \Zend\Cache\Storage\Adapter\AbstractAdapter
+     */
     protected $_cache;
 
     public function __construct(UserTable $userTable, FeedTable $feedTable, $cache = null)
@@ -32,6 +54,12 @@ class FeedsController extends AbstractActionController
         }
     }
 
+    /**
+     * Ensures that the actions in this controller can only be used if a user is authenticated.
+     *
+     * @param EventManagerInterface $events
+     * @return $this|void|\Zend\Mvc\Controller\AbstractController
+     */
     public function setEventManager(EventManagerInterface $events)
     {
         parent::setEventManager($events);
@@ -46,6 +74,13 @@ class FeedsController extends AbstractActionController
         }, 100); // execute before executing action logic
     }
 
+    /**
+     * Displays a list of the most recent feeds, reverse date order, to the user.
+     *
+     * It's intended as a starting off point to the rest of the application.
+     *
+     * @return array|ViewModel
+     */
     public function indexAction()
     {
         if (!is_null($this->_cache)) {
@@ -74,6 +109,11 @@ class FeedsController extends AbstractActionController
         ));
     }
 
+    /**
+     * All the user to search for feeds in the application based on a start and end date.
+     *
+     * @return ViewModel
+     */
     public function searchAction()
     {
         $formManager = $this->serviceLocator->get('FormElementManager');
@@ -84,6 +124,11 @@ class FeedsController extends AbstractActionController
         ));
     }
 
+    /**
+     * Allow the user to delete a feed, one at a time.
+     *
+     * @return ViewModel
+     */
     public function deleteAction()
     {
         $formManager = $this->serviceLocator->get('FormElementManager');
@@ -99,6 +144,12 @@ class FeedsController extends AbstractActionController
                     if (!is_null($this->_cache)) {
                         $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                     }
+                    $feed = new FeedModel();
+                    $feed->exchangeArray($form->getData());
+                    // trigger the deleted event
+                    $this->getEventManager()->trigger('Feed.Delete', $this, array(
+                        'feedData' => $feed
+                    ));
                 }
                 return $this->redirect()->toRoute('feeds', array());
             }
@@ -109,6 +160,11 @@ class FeedsController extends AbstractActionController
         ));
     }
 
+    /**
+     * All a user to add and update a feed in the application
+     *
+     * @return ViewModel
+     */
     public function manageAction()
     {
         $formManager = $this->serviceLocator->get('FormElementManager');
@@ -127,9 +183,14 @@ class FeedsController extends AbstractActionController
                 $feed = new FeedModel();
                 $feed->exchangeArray($form->getData());
                 $this->_feedTable->save($feed);
+
                 if (!is_null($this->_cache)) {
                     $this->_cache->removeItem(self::KEY_ALL_RESULTS);
                 }
+
+                $this->getEventManager()->trigger('Feed.Modify', $this, array(
+                    'feedData' => $feed
+                ));
 
                 return $this->redirect()->toRoute('feeds', array());
             }

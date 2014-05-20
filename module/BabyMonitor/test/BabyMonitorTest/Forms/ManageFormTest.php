@@ -38,9 +38,13 @@ class ManageFormTest extends BasicFormTest
             'userId' => array(
                 'type' => 'hidden',
             ),
-            'feedDateTime' => array(
+            'feedDate' => array(
                 'type' => 'text',
-                'placeholder' => 'date & time'
+                'placeholder' => 'feed date'
+            ),
+            'feedTime' => array(
+                'type' => 'text',
+                'placeholder' => 'feed time'
             ),
             'feedAmount' => array(
                 'type' => 'text',

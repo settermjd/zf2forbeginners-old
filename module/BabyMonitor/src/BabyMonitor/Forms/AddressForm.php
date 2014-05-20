@@ -2,23 +2,19 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Short description for file
+ * Manages adding and updating addresses in the application
  *
- * Long description for file (if any)...
- *
- * PHP version 5.4
- *
- * @category   CategoryName
- * @package    PackageName
+ * @category   BabyMonitor
+ * @package    Forms
  * @author     Matthew Setter <matthew@maltblue.com>
- * @copyright  2014 Client/Author
- * @see        Enter if required
- * @since      File available since Release/Tag:
+ * @copyright  2014 Matthew Setter <matthew@maltblue.com>
+ * @since      File available since Release/Tag: 1.0
  */
 
 namespace BabyMonitor\Forms;
 
 
-class AddressForm {
+class AddressForm
+{
 
 }
