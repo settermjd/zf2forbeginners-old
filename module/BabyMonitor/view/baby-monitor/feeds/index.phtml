@@ -6,6 +6,8 @@
     <li class="active">All Feeds</li>
 </ul>
 
+<?php echo $this->partial('babymonitor/feeds/messages/default'); ?>
+
 <?php if (count($this->paginator)) : ?>
 <p>Here are the last <?php print $feedCount; ?> feeds, from latest to oldest.</p>
 <?php endif; ?>

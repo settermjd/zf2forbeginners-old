@@ -105,7 +105,11 @@ class FeedsController extends AbstractActionController
 
         return new ViewModel(array(
             'paginator' => $paginator,
-            'feedCount' => self::DEFAULT_FEED_COUNT
+            'feedCount' => self::DEFAULT_FEED_COUNT,
+            'messages' => array(
+                'info' => $this->flashMessenger()->hasInfoMessages(),
+                'error' => $this->flashMessenger()->hasErrorMessages()
+            )
         ));
     }
 
@@ -137,6 +141,11 @@ class FeedsController extends AbstractActionController
             'feedId' => (int)$this->params()->fromRoute('id')
         ));
 
+        if (!$this->_feedTable->fetchById($form->getInputFilter()->getValue('feedId'))) {
+            $this->flashMessenger()->addErrorMessage("Unable to find that feed. Perhaps you meant a different one?");
+            return $this->redirect()->toRoute('feeds', array());
+        }
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
@@ -150,8 +159,9 @@ class FeedsController extends AbstractActionController
                     $this->getEventManager()->trigger('Feed.Delete', $this, array(
                         'feedData' => $feed
                     ));
+                    $this->flashMessenger()->addInfoMessage("Feed Deleted.");
+                    return $this->redirect()->toRoute('feeds', array());
                 }
-                return $this->redirect()->toRoute('feeds', array());
             }
         }
 
@@ -172,9 +182,15 @@ class FeedsController extends AbstractActionController
 
         $feedId = (int)$this->params()->fromRoute('id');
 
-        if (!empty($feedId)) {
-            $feed = $this->_feedTable->fetchById($feedId);
-            $form->setData($feed->getArrayCopy());
+        if ($this->getRequest()->isGet()) {
+            if (!empty($feedId)) {
+                if ($feed = $this->_feedTable->fetchById($feedId)) {
+                    $form->setData($feed->getArrayCopy());
+                } else {
+                    $this->flashMessenger()->addInfoMessage('Unable to find that feed. Perhaps a new one?');
+                    return $this->redirect()->toRoute('feeds', array('action' => 'manage'));
+                }
+            }
         }
 
         if ($this->getRequest()->isPost()) {
@@ -198,7 +214,10 @@ class FeedsController extends AbstractActionController
 
         return new ViewModel(array(
             'form' => $form,
-            'cancelTitle' => ($feedId) ? "Don't update the record" : "Don't create the record"
+            'cancelTitle' => ($feedId) ? "Don't update the record" : "Don't create the record",
+            'messages' => array(
+                'info' => $this->flashMessenger()->hasInfoMessages()
+            )
         ));
     }
 
