@@ -172,9 +172,11 @@ class FeedsController extends AbstractActionController
 
         $feedId = (int)$this->params()->fromRoute('id');
 
+        if ($this->getRequest()->isGet()) {
         if (!empty($feedId)) {
             $feed = $this->_feedTable->fetchById($feedId);
             $form->setData($feed->getArrayCopy());
+            }
         }
 
         if ($this->getRequest()->isPost()) {
