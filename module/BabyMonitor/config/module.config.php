@@ -42,6 +42,7 @@ return array(
             'layout/login'          => __DIR__ . '/../view/layout/login-layout.phtml',
             'babymonitor/feeds/paginator/default'   => __DIR__ . '/../view/baby-monitor/feeds/partials/pagination.phtml',
             'babymonitor/feeds/results/default'     => __DIR__ . '/../view/baby-monitor/feeds/partials/feed-results.phtml',
+            'babymonitor/feeds/messages/default'    => __DIR__ . '/../view/baby-monitor/feeds/partials/flash-messenger.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
