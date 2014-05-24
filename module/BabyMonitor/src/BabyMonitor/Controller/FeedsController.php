@@ -105,7 +105,11 @@ class FeedsController extends AbstractActionController
 
         return new ViewModel(array(
             'paginator' => $paginator,
-            'feedCount' => self::DEFAULT_FEED_COUNT
+            'feedCount' => self::DEFAULT_FEED_COUNT,
+            'messages' => array(
+                'info' => $this->flashMessenger()->hasInfoMessages(),
+                'error' => $this->flashMessenger()->hasErrorMessages()
+            )
         ));
     }
 
@@ -137,6 +141,11 @@ class FeedsController extends AbstractActionController
             'feedId' => (int)$this->params()->fromRoute('id')
         ));
 
+        if (!$this->_feedTable->fetchById($form->getInputFilter()->getValue('feedId'))) {
+            $this->flashMessenger()->addErrorMessage("Unable to find that feed. Perhaps you meant a different one?");
+            return $this->redirect()->toRoute('feeds', array());
+        }
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
@@ -150,8 +159,9 @@ class FeedsController extends AbstractActionController
                     $this->getEventManager()->trigger('Feed.Delete', $this, array(
                         'feedData' => $feed
                     ));
+                    $this->flashMessenger()->addInfoMessage("Feed Deleted.");
+                    return $this->redirect()->toRoute('feeds', array());
                 }
-                return $this->redirect()->toRoute('feeds', array());
             }
         }
 
