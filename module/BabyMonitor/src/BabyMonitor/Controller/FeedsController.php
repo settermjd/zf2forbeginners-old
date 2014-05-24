@@ -172,9 +172,15 @@ class FeedsController extends AbstractActionController
 
         $feedId = (int)$this->params()->fromRoute('id');
 
-        if (!empty($feedId)) {
-            $feed = $this->_feedTable->fetchById($feedId);
-            $form->setData($feed->getArrayCopy());
+        if ($this->getRequest()->isGet()) {
+            if (!empty($feedId)) {
+                if ($feed = $this->_feedTable->fetchById($feedId)) {
+                    $form->setData($feed->getArrayCopy());
+                } else {
+                    $this->flashMessenger()->addInfoMessage('Unable to find that feed. Perhaps a new one?');
+                    return $this->redirect()->toRoute('feeds', array('action' => 'manage'));
+                }
+            }
         }
 
         if ($this->getRequest()->isPost()) {
@@ -198,7 +204,10 @@ class FeedsController extends AbstractActionController
 
         return new ViewModel(array(
             'form' => $form,
-            'cancelTitle' => ($feedId) ? "Don't update the record" : "Don't create the record"
+            'cancelTitle' => ($feedId) ? "Don't update the record" : "Don't create the record",
+            'messages' => array(
+                'info' => $this->flashMessenger()->hasInfoMessages()
+            )
         ));
     }
 
