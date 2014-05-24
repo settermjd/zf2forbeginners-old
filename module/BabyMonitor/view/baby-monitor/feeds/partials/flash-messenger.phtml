@@ -9,6 +9,11 @@ $this->flashMessenger()
     ->setMessageSeparatorString('</li><li>')
     ->setMessageCloseString('</li></ul></div>');
 ?>
+
 <?php if ($this->messages['info']): ?>
-<?php echo $this->flashMessenger()->render('info', array('alert', 'alert-dismissable', 'alert-info')); ?>
+    <?php echo $this->flashMessenger()->render('info', array('alert', 'alert-dismissable', 'alert-info')); ?>
+<?php endif; ?>
+
+<?php if ($this->messages['error']): ?>
+    <?php echo $this->flashMessenger()->render('error', array('alert', 'alert-dismissable', 'alert-danger')); ?>
 <?php endif; ?>
