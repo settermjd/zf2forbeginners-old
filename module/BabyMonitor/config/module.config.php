@@ -30,13 +30,13 @@ return array(
                         'may_terminate' => true,
                     ),
                     'delete' => array(
-                'type'    => 'segment',
-                'options' => array(
+                        'type' => 'segment',
+                        'options' => array(
                             'route' => '/delete[/:id]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
+                            'constraints' => array(
+                                'id'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
                                 'action' => 'delete',
                             )
                         ),
@@ -84,6 +84,7 @@ return array(
             'babymonitor/feeds/paginator/default'   => __DIR__ . '/../view/baby-monitor/feeds/partials/pagination.phtml',
             'babymonitor/feeds/results/default'     => __DIR__ . '/../view/baby-monitor/feeds/partials/feed-results.phtml',
             'babymonitor/feeds/messages/default'    => __DIR__ . '/../view/baby-monitor/feeds/partials/flash-messenger.phtml',
+            'babymonitor/feeds/results/search/default'     => __DIR__ . '/../view/baby-monitor/feeds/partials/feed-search-results-default.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

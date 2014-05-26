@@ -36,3 +36,9 @@ echo $this->form()->openTag($form);
 </div>
 
 <?php echo $this->form()->closeTag(); ?>
+<fieldset>
+    <legend>Search Results</legend>
+    <?php echo $this->partial('babymonitor/feeds/results/search/default', array(
+        'paginator' => $this->paginator
+    )); ?>
+</fieldset>
