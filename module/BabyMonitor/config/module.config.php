@@ -1,18 +1,59 @@
 <?php
+
 return array(
     'router' => array(
         'routes' => array(
             'feeds' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/feeds',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'BabyMonitor\Controller',
+                        'controller'    => 'Feeds',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'search' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/search[/:startDate][/:endDate]',
+                            'constraints' => array(
+                                'startDate' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+                                'endDate'   => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+                            ),
+                            'defaults' => array(
+                                'action'    => 'search',
+                            )
+                        ),
+                        'may_terminate' => true,
+                    ),
+                    'delete' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/feeds[/][:action][/:id]',
+                            'route' => '/delete[/:id]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'BabyMonitor\Controller\Feeds',
-                        'action'     => 'index',
+                                'action' => 'delete',
+                            )
+                        ),
+                        'may_terminate' => true,
+                    ),
+                    'manage' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/manage[/:id]',
+                            'constraints' => array(
+                                'id'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'action' => 'manage',
+                            )
+                        ),
+                        'may_terminate' => true,
                     ),
                 ),
             ),
