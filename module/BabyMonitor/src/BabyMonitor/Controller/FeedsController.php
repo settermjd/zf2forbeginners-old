@@ -25,6 +25,11 @@ class FeedsController extends AbstractActionController
     const DEFAULT_RECORDS_PER_PAGE = 20;
 
     /**
+     * @var int
+     */
+    const DEFAULT_PAGE = 1;
+
+    /**
      * default cache key for recent feeds
      */
     const KEY_ALL_RESULTS = "recent_feeds";
@@ -100,7 +105,7 @@ class FeedsController extends AbstractActionController
             $paginator = new Paginator(new Iterator($resultset));
         }
 
-        $paginator->setCurrentPageNumber($this->params()->fromRoute('page', 1));
+        $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
         $paginator->setItemCountPerPage($this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE));
 
         return new ViewModel(array(
@@ -123,9 +128,41 @@ class FeedsController extends AbstractActionController
         $formManager = $this->serviceLocator->get('FormElementManager');
         $form = $formManager->get('BabyMonitor\Forms\SearchForm');
 
-        return new ViewModel(array(
-            'form' => $form
-        ));
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                return $this->redirect()->toRoute('feeds/search', array(
+                    'startDate' => $form->getInputFilter()->getValue('startDate'),
+                    'endDate' => $form->getInputFilter()->getValue('endDate'),
+                ));
+            }
+        }
+
+        if ($this->getRequest()->isGet()) {
+            $form->setData($this->params()->fromRoute());
+            if ($form->isValid()) {
+                $resultset = $this->_feedTable->fetchByDateRange(
+                    new \DateTime($form->getInputFilter()->getValue('startDate')),
+                    new \DateTime($form->getInputFilter()->getValue('endDate', null))
+                );
+
+                if (is_array($resultset)) {
+                    $paginator = new Paginator(new ArrayAdapter($resultset));
+                } else {
+                    $paginator = new Paginator(new Iterator($resultset));
+                }
+
+                $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
+                $paginator->setItemCountPerPage(
+                    $this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE)
+                );
+            }
+
+            return new ViewModel(array(
+                'form' => $form,
+                'paginator' => (isset($paginator)) ? $paginator : new Paginator(new ArrayAdapter(array())),
+            ));
+        }
     }
 
     /**
@@ -141,7 +178,7 @@ class FeedsController extends AbstractActionController
             'feedId' => (int)$this->params()->fromRoute('id')
         ));
 
-        if (!$this->_feedTable->fetchById($form->getInputFilter()->getValue('feedId'))) {
+        if (!$this->_feedTable->fetchById((int)$this->params()->fromRoute('id'))) {
             $this->flashMessenger()->addErrorMessage("Unable to find that feed. Perhaps you meant a different one?");
             return $this->redirect()->toRoute('feeds', array());
         }
