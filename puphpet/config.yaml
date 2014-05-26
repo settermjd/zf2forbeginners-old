@@ -47,6 +47,7 @@ server:
     packages:
         - vim
         - curl
+        - siege
     dot_files:
         -
             bash_aliases: null
