@@ -10,10 +10,10 @@ $this->flashMessenger()
     ->setMessageCloseString('</li></ul></div>');
 ?>
 
-<?php if ($this->messages['info']): ?>
+<?php if (array_key_exists('info', $this->messages) && $this->messages['info']): ?>
     <?php echo $this->flashMessenger()->render('info', array('alert', 'alert-dismissable', 'alert-info')); ?>
 <?php endif; ?>
 
-<?php if ($this->messages['error']): ?>
+<?php if (array_key_exists('error', $this->messages) && $this->messages['error']): ?>
     <?php echo $this->flashMessenger()->render('error', array('alert', 'alert-dismissable', 'alert-danger')); ?>
 <?php endif; ?>
