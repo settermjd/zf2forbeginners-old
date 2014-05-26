@@ -23,7 +23,7 @@
 
     <!-- Scripts -->
     <?php $this->headScript()
-        ->prependFile($this->basePath() . '/js/bootstrap.js')
+        ->prependFile($this->basePath() . '/js/bootstrap.min.js')
         ->prependFile($this->basePath() . '/js/jquery.min.js')
         ->appendFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
         ->appendFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
@@ -59,9 +59,9 @@
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="<?php print $this->url('feeds'); ?>"
                         ><?php echo $this->translate('Feeds'); ?></a></li>
-                <li><a href="<?php print $this->url('feeds', array('action' => 'manage')); ?>"
+                <li><a href="<?php print $this->url('feeds/manage', array()); ?>"
                         ><?php echo $this->translate('Add Feed'); ?></a></li>
-                <li><a href="<?php print $this->url('feeds', array('action' => 'search')); ?>"
+                <li><a href="<?php print $this->url('feeds/search', array()); ?>"
                         ><?php echo $this->translate('Search Feeds'); ?></a></li>
             </ul>
         </div>

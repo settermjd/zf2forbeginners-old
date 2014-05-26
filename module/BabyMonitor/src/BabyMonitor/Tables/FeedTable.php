@@ -108,7 +108,7 @@ class FeedTable
 
         $results = $this->tableGateway->selectWith($select);
 
-        return $results;
+        return $results->buffer();
     }
 
     public function save(FeedModel $feed)

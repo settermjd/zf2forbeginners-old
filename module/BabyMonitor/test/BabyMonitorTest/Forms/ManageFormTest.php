@@ -62,7 +62,8 @@ class ManageFormTest extends BasicFormTest
 
         $this->_formProperties = array(
             'method' => 'post',
-            'name' => 'ManageRecordForm'
+            'name' => 'ManageRecordForm',
+            'action' => '/feeds/manage'
         );
     }
 

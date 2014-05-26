@@ -14,6 +14,7 @@
 namespace BabyMonitor\Forms;
 
 use Zend\Form\Form;
+use BabyMonitor\InputFilter\SearchFeedInputFilter;
 
 class SearchForm extends Form
 {
@@ -22,7 +23,9 @@ class SearchForm extends Form
         parent::__construct('Search');
 
         $this->setAttribute('method', 'post')
-             ->setAttribute('class', 'form-inline');
+             ->setAttribute('class', 'form-inline')
+             ->setAttribute('action', '/feeds/search')
+             ->setInputFilter(new SearchFeedInputFilter());
 
         // Add form elements
         $this->add(array(

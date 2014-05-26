@@ -6,33 +6,47 @@
     <li class="active">Search Feeds</li>
 </ul>
 
-<?php
-$form = $this->form;
-$form->setAttribute('action', $this->url('feeds', array('action' => 'search', 'class' => 'form-inline')));
-$form->prepare();
-echo $this->form()->openTag($form);
-?>
+<fieldset>
+    <legend>Search Criteria</legend>
 
-<div class="tab-content">
+    <?php
+    $form = $this->form;
+    //$form->setAttribute('action', $this->url('feeds', array('action' => 'search', 'class' => 'form-inline')));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
 
-    <div class="form-group">
-        <?php
-        $element = $form->get('startDate');
-        echo $this->formText($element);
-        echo $this->formElementErrors($element);
-        ?>
+    <div class="tab-content">
+
+        <div class="form-group">
+            <?php
+            $element = $form->get('startDate');
+            echo $this->formText($element);
+            echo $this->formElementErrors($element);
+            ?>
+        </div>
+
+        <div class="form-group">
+            <?php
+            $element = $form->get('endDate');
+            echo $this->formText($element);
+            echo $this->formElementErrors($element);
+            ?>
+        </div>
+
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+
     </div>
 
-    <div class="form-group">
-        <?php
-        $element = $form->get('endDate');
-        echo $this->formText($element);
-        echo $this->formElementErrors($element);
-        ?>
-    </div>
+    <?php echo $this->form()->closeTag(); ?>
 
-    <?php echo $this->formSubmit($form->get('submit')); ?>
+</fieldset>
 
-</div>
+<br />
 
-<?php echo $this->form()->closeTag(); ?>
+<fieldset>
+    <legend>Search Results</legend>
+    <?php echo $this->partial('babymonitor/feeds/results/search/default', array(
+        'paginator' => $this->paginator
+    )); ?>
+</fieldset>
