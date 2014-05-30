@@ -99,17 +99,6 @@ class SearchFeedInputFilter extends InputFilter
             switch ($fieldName) {
 
                 case ("startDate"):
-                    $input->getValidatorChain()
-                        ->attach(new Validator\Date(array(
-                                'messageTemplates' => array(
-                                    Validator\Date::FALSEFORMAT => 'The date supplied is not in the correct format',
-                                    Validator\Date::INVALID => "The input does not appear to be a valid date",
-                                    Validator\Date::INVALID_DATE => "The input does not fit the date format '%format%'",
-                                )
-                            )
-                        ));
-                    break;
-
                 case ("endDate"):
                     $input->getValidatorChain()
                         ->attach(new Validator\Date(array(
