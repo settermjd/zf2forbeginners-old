@@ -35,6 +35,11 @@ class FeedsController extends AbstractActionController
     const KEY_ALL_RESULTS = "recent_feeds";
 
     /**
+     * @var string The default route, used to avoid magic variables
+     */
+    const DEFAULT_ROUTE = 'feeds';
+
+    /**
      * @var UserTable
      */
     protected $_userTable;
@@ -180,7 +185,7 @@ class FeedsController extends AbstractActionController
 
         if (!$this->_feedTable->fetchById((int)$this->params()->fromRoute('id'))) {
             $this->flashMessenger()->addErrorMessage("Unable to find that feed. Perhaps you meant a different one?");
-            return $this->redirect()->toRoute('feeds', array());
+            return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
         }
 
         if ($this->getRequest()->isPost()) {
@@ -197,7 +202,7 @@ class FeedsController extends AbstractActionController
                         'feedData' => $feed
                     ));
                     $this->flashMessenger()->addInfoMessage("Feed Deleted.");
-                    return $this->redirect()->toRoute('feeds', array());
+                    return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
                 }
             }
         }
@@ -225,7 +230,7 @@ class FeedsController extends AbstractActionController
                     $form->setData($feed->getArrayCopy());
                 } else {
                     $this->flashMessenger()->addInfoMessage('Unable to find that feed. Perhaps a new one?');
-                    return $this->redirect()->toRoute('feeds', array('action' => 'manage'));
+                    return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array('action' => 'manage'));
                 }
             }
         }
@@ -245,7 +250,7 @@ class FeedsController extends AbstractActionController
                     'feedData' => $feed
                 ));
 
-                return $this->redirect()->toRoute('feeds', array());
+                return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
             }
         }
 
