@@ -113,6 +113,9 @@ class FeedTable
 
     public function save(FeedModel $feed)
     {
+        /*
+         * Left because you could also approach it this way
+         *
         $data = array(
             'userId' => $feed->userId,
             'feedDate' => $feed->feedDate,
@@ -121,14 +124,16 @@ class FeedTable
             'feedNotes' => $feed->feedNotes,
             'feedTemperature' => $feed->feedTemperature,
         );
-        $feedId = (int)$feed->feedId;
+         */
+        $data = $feed->getArrayCopy();
+        unset($data['feedId']);
 
-        if ($feedId == 0) {
+        if ((int)$feed->feedId == 0) {
             if ($this->tableGateway->insert($data)) {
                 return $this->tableGateway->getLastInsertValue();
             }
         } else {
-            if ($retstat = $this->tableGateway->update($data, array('feedId' => $feedId))) {
+            if ($retstat = $this->tableGateway->update($data, array('feedId' => (int)$feed->feedId))) {
                 return $retstat;
             }
         }
