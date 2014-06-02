@@ -69,10 +69,10 @@ class FeedTable
     /**
      * Return X most recent feeds
      *
-     * @param $limit
+     * @param int $limit The limit of records returned. Defaults to 5
      * @return bool|null|\Zend\Db\ResultSet\ResultSetInterface
      */
-    public function fetchMostRecentFeeds($limit)
+    public function fetchMostRecentFeeds($limit = 5)
     {
         if (!empty($limit)) {
             $select = $this->tableGateway->getSql()->select();

@@ -96,6 +96,28 @@ class FeedTableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($resultSet, $mockFeedTable->fetchMostRecentFeeds($limit));
     }
 
+    public function testFetchMostRecentFeedsWhenLimitNotSuppliedLimitDefaultsTo5()
+    {
+        $resultSet = new ResultSet();
+        $record = new FeedModel();
+        $record->exchangeArray($this->_recordData);
+        $limit = 5;
+        $resultSet->initialize(array($record));
+
+        $mockSql = \Mockery::mock('Zend\Db\Sql\Select');
+        $mockSql->shouldReceive('select')->andReturn($mockSql);
+        $mockSql->shouldReceive('limit')->with($limit)->times(1)->andReturn($mockSql);
+        $mockSql->shouldReceive('order')->times(1)->with("feedDate DESC, feedTime DESC")->andReturn($resultSet);
+
+        $mockTableGateway = \Mockery::mock('Zend\Db\TableGateway\TableGateway');
+        $mockTableGateway->shouldReceive('getSql')->andReturn($mockSql);
+        $mockTableGateway->shouldReceive('selectWith')->times(1)->with($mockSql)->andReturn($resultSet);
+
+        $mockFeedTable = new FeedTable($mockTableGateway);
+
+        $this->assertEquals($resultSet, $mockFeedTable->fetchMostRecentFeeds());
+    }
+
     public function testFetchByDateRangeCanSearchBetweenDates()
     {
         $resultSet = new ResultSet();
