@@ -155,7 +155,7 @@ class FeedsController extends AbstractActionController
 
             return new ViewModel(array(
                 'form' => $form,
-                'paginator' => (isset($paginator)) ? $paginator,
+                'paginator' => (isset($paginator)) ? $paginator : $this->getPaginator(array())
             ));
         }
     }
