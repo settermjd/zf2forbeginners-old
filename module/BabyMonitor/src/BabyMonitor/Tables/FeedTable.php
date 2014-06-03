@@ -69,10 +69,10 @@ class FeedTable
     /**
      * Return X most recent feeds
      *
-     * @param $limit
+     * @param int $limit The limit of records returned. Defaults to 5
      * @return bool|null|\Zend\Db\ResultSet\ResultSetInterface
      */
-    public function fetchMostRecentFeeds($limit)
+    public function fetchMostRecentFeeds($limit = 5)
     {
         if (!empty($limit)) {
             $select = $this->tableGateway->getSql()->select();
@@ -108,11 +108,14 @@ class FeedTable
 
         $results = $this->tableGateway->selectWith($select);
 
-        return $results;
+        return $results->buffer();
     }
 
     public function save(FeedModel $feed)
     {
+        /*
+         * Left because you could also approach it this way
+         *
         $data = array(
             'userId' => $feed->userId,
             'feedDate' => $feed->feedDate,
@@ -121,14 +124,16 @@ class FeedTable
             'feedNotes' => $feed->feedNotes,
             'feedTemperature' => $feed->feedTemperature,
         );
-        $feedId = (int)$feed->feedId;
+         */
+        $data = $feed->getArrayCopy();
+        unset($data['feedId']);
 
-        if ($feedId == 0) {
+        if ((int)$feed->feedId == 0) {
             if ($this->tableGateway->insert($data)) {
                 return $this->tableGateway->getLastInsertValue();
             }
         } else {
-            if ($retstat = $this->tableGateway->update($data, array('feedId' => $feedId))) {
+            if ($retstat = $this->tableGateway->update($data, array('feedId' => (int)$feed->feedId))) {
                 return $retstat;
             }
         }

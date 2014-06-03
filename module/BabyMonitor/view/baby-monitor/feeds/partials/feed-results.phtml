@@ -1,6 +1,6 @@
 <tr>
     <td> <a href="<?php print $this->url(
-            'feeds', array('action' => 'manage', 'id' => $this->feedId));
+            'feeds/manage', array('id' => $this->feedId));
         ?>" title="Update Feed"><?php print $this->feedId; ?></a></td>
     <td><?php echo $this->dateFormat(
             new \DateTime($this->feedDate . ' ' . $this->feedTime),
@@ -22,7 +22,7 @@
     </td>
     <td style="text-align: center;">
         <a href="<?php print $this->url(
-            'feeds', array('action' => 'delete', 'id' => $this->feedId));
+            'feeds/delete', array('id' => $this->feedId));
         ?>" title="Delete Feed"><?php print $this->translate('delete'); ?></a>
     </td>
 </tr>

@@ -25,9 +25,19 @@ class FeedsController extends AbstractActionController
     const DEFAULT_RECORDS_PER_PAGE = 20;
 
     /**
+     * @var int
+     */
+    const DEFAULT_PAGE = 1;
+
+    /**
      * default cache key for recent feeds
      */
     const KEY_ALL_RESULTS = "recent_feeds";
+
+    /**
+     * @var string The default route, used to avoid magic variables
+     */
+    const DEFAULT_ROUTE = 'feeds';
 
     /**
      * @var UserTable
@@ -94,13 +104,8 @@ class FeedsController extends AbstractActionController
             $resultset = $this->_feedTable->fetchMostRecentFeeds(self::DEFAULT_FEED_COUNT);
         }
 
-        if (is_array($resultset)) {
-            $paginator = new Paginator(new ArrayAdapter($resultset));
-        } else {
-            $paginator = new Paginator(new Iterator($resultset));
-        }
-
-        $paginator->setCurrentPageNumber($this->params()->fromRoute('page', 1));
+        $paginator = $this->getPaginator($resultset);
+        $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
         $paginator->setItemCountPerPage($this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE));
 
         return new ViewModel(array(
@@ -123,9 +128,51 @@ class FeedsController extends AbstractActionController
         $formManager = $this->serviceLocator->get('FormElementManager');
         $form = $formManager->get('BabyMonitor\Forms\SearchForm');
 
-        return new ViewModel(array(
-            'form' => $form
-        ));
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                return $this->redirect()->toRoute('feeds/search', array(
+                    'startDate' => $form->getInputFilter()->getValue('startDate'),
+                    'endDate' => $form->getInputFilter()->getValue('endDate'),
+                ));
+            }
+        }
+
+        if ($this->getRequest()->isGet()) {
+            $form->setData($this->params()->fromRoute());
+            if ($form->isValid()) {
+                $resultset = $this->_feedTable->fetchByDateRange(
+                    new \DateTime($form->getInputFilter()->getValue('startDate')),
+                    new \DateTime($form->getInputFilter()->getValue('endDate', null))
+                );
+
+                $paginator = $this->getPaginator($resultset);
+                $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
+                $paginator->setItemCountPerPage(
+                    $this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE)
+                );
+            }
+
+            return new ViewModel(array(
+                'form' => $form,
+                'paginator' => (isset($paginator)) ? $paginator : $this->getPaginator(array())
+            ));
+        }
+    }
+
+    /**
+     * Returns a paginator suitable to the object passed in
+     */
+    public function getPaginator($resultset = array())
+    {
+        if (is_array($resultset)) {
+            $paginator = new Paginator(new ArrayAdapter($resultset));
+        } elseif(!is_null($resultset)) {
+            $paginator = new Paginator(new ArrayAdapter(array()));
+        } else {
+            $paginator = new Paginator(new Iterator($resultset));
+        }
+        return $paginator;
     }
 
     /**
@@ -141,13 +188,15 @@ class FeedsController extends AbstractActionController
             'feedId' => (int)$this->params()->fromRoute('id')
         ));
 
-        if (!$this->_feedTable->fetchById($form->getInputFilter()->getValue('feedId'))) {
+        if (!$this->_feedTable->fetchById((int)$this->params()->fromRoute('id'))) {
             $this->flashMessenger()->addErrorMessage("Unable to find that feed. Perhaps you meant a different one?");
-            return $this->redirect()->toRoute('feeds', array());
+            return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
         }
 
         if ($this->getRequest()->isPost()) {
+
             $form->setData($this->getRequest()->getPost());
+
             if ($form->isValid()) {
                 if ($this->_feedTable->delete($form->getInputFilter()->getValue('feedId'))) {
                     if (!is_null($this->_cache)) {
@@ -160,7 +209,7 @@ class FeedsController extends AbstractActionController
                         'feedData' => $feed
                     ));
                     $this->flashMessenger()->addInfoMessage("Feed Deleted.");
-                    return $this->redirect()->toRoute('feeds', array());
+                    return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
                 }
             }
         }
@@ -188,7 +237,7 @@ class FeedsController extends AbstractActionController
                     $form->setData($feed->getArrayCopy());
                 } else {
                     $this->flashMessenger()->addInfoMessage('Unable to find that feed. Perhaps a new one?');
-                    return $this->redirect()->toRoute('feeds', array('action' => 'manage'));
+                    return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array('action' => 'manage'));
                 }
             }
         }
@@ -208,7 +257,7 @@ class FeedsController extends AbstractActionController
                     'feedData' => $feed
                 ));
 
-                return $this->redirect()->toRoute('feeds', array());
+                return $this->redirect()->toRoute(self::DEFAULT_ROUTE, array());
             }
         }
 

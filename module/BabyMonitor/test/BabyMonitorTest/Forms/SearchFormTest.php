@@ -44,7 +44,8 @@ class SearchFormTest extends BasicFormTest
 
         $this->_formProperties = array(
             'method' => 'post',
-            'name' => 'Search'
+            'name' => 'Search',
+            'action' => '/feeds/search'
         );
     }
 

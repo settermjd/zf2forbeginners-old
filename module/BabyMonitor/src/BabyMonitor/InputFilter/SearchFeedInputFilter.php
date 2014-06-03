@@ -26,9 +26,9 @@ use Zend\Filter\StripNewlines;
 use Zend\Filter\StripTags;
 use Zend\Filter\Int;
 use Zend\Filter\FilterChain;
-use Zend\Validator\Digits;
+use Zend\Validator\Date;
 
-class DeleteFeedInputFilter extends InputFilter
+class SearchFeedInputFilter extends InputFilter
 {
     /**
      * Stores the names of the fields that are mandatory
@@ -36,7 +36,7 @@ class DeleteFeedInputFilter extends InputFilter
      * @var array
      */
     protected $_requiredFields = array(
-        "feedId"
+
     );
 
     /**
@@ -44,7 +44,9 @@ class DeleteFeedInputFilter extends InputFilter
      *
      * @var array
      */
-    protected $_optionalFields = array();
+    protected $_optionalFields = array(
+        "startDate", "endDate"
+    );
 
     /**
      * Setup the filterchain and input fields
@@ -67,23 +69,11 @@ class DeleteFeedInputFilter extends InputFilter
         foreach ($this->_requiredFields as $fieldName) {
             $input = new Input($fieldName);
             $input->setRequired(true)
-                ->setAllowEmpty(false)
-                ->setBreakOnFailure(false)
-                ->setFilterChain($this->_getStandardFilter());
+                  ->setAllowEmpty(false)
+                  ->setBreakOnFailure(false)
+                  ->setFilterChain($this->_getStandardFilter());
 
             switch ($fieldName) {
-
-                case ("feedId"):
-                    $input->getValidatorChain()
-                        ->attach(new Digits(array(
-                                'messageTemplates' => array(
-                                    Digits::NOT_DIGITS => 'The value supplied is not a valid number',
-                                    Digits::STRING_EMPTY => 'A value must be supplied',
-                                    Digits::INVALID => 'The value supplied is not a valid number',
-                                )
-                            )
-                        ));
-                    break;
 
             }
 
@@ -104,8 +94,25 @@ class DeleteFeedInputFilter extends InputFilter
         foreach ($this->_optionalFields as $fieldName) {
             $input = new Input($fieldName);
             $input->setRequired(true)
-                ->setAllowEmpty(true)
-                ->setFilterChain($this->_getStandardFilter());
+                  ->setAllowEmpty(true)
+                  ->setFilterChain($this->_getStandardFilter());
+
+            switch ($fieldName) {
+
+                case ("startDate"):
+                case ("endDate"):
+                    $input->getValidatorChain()
+                          ->attach(new Date(array(
+                                'messageTemplates' => array(
+                                    Date::FALSEFORMAT => 'The date supplied is not in the correct format',
+                                    Date::INVALID => "The input does not appear to be a valid date",
+                                    Date::INVALID_DATE => "The input does not fit the date format '%format%'",
+                                )
+                            )
+                        ));
+                    break;
+
+            }
 
             $this->add($input);
         }
@@ -113,11 +120,18 @@ class DeleteFeedInputFilter extends InputFilter
         return $this;
     }
 
-
+    /**
+     * Apply a standard set of filters to elements
+     *
+     * @return \Zend\Filter\FilterChain
+     */
     protected function _getStandardFilter()
     {
         $baseInputFilterChain = new FilterChain();
-        $baseInputFilterChain->attach(new Int());
+        $baseInputFilterChain->attach(new HtmlEntities())
+            ->attach(new StringTrim())
+            ->attach(new StripNewlines())
+            ->attach(new StripTags());
 
         return $baseInputFilterChain;
     }

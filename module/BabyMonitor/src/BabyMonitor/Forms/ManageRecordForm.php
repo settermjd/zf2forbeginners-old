@@ -22,7 +22,8 @@ class ManageRecordForm extends Form
         parent::__construct('ManageRecordForm');
 
         $this->setAttribute('method', 'post')
-             ->setAttribute('class', 'form-horizontal');
+             ->setAttribute('class', 'form-horizontal')
+             ->setAttribute('action', '/feeds/manage');
 
         // Add form elements
         $this->add(array(
