@@ -104,12 +104,7 @@ class FeedsController extends AbstractActionController
             $resultset = $this->_feedTable->fetchMostRecentFeeds(self::DEFAULT_FEED_COUNT);
         }
 
-        if (is_array($resultset)) {
-            $paginator = new Paginator(new ArrayAdapter($resultset));
-        } else {
-            $paginator = new Paginator(new Iterator($resultset));
-        }
-
+        $paginator = $this->getPaginator($resultset);
         $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
         $paginator->setItemCountPerPage($this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE));
 
@@ -151,12 +146,7 @@ class FeedsController extends AbstractActionController
                     new \DateTime($form->getInputFilter()->getValue('endDate', null))
                 );
 
-                if (is_array($resultset)) {
-                    $paginator = new Paginator(new ArrayAdapter($resultset));
-                } else {
-                    $paginator = new Paginator(new Iterator($resultset));
-                }
-
+                $paginator = $this->getPaginator($resultset);
                 $paginator->setCurrentPageNumber($this->params()->fromRoute('page', self::DEFAULT_PAGE));
                 $paginator->setItemCountPerPage(
                     $this->params()->fromRoute('perPage', self::DEFAULT_RECORDS_PER_PAGE)
@@ -165,9 +155,24 @@ class FeedsController extends AbstractActionController
 
             return new ViewModel(array(
                 'form' => $form,
-                'paginator' => (isset($paginator)) ? $paginator : new Paginator(new ArrayAdapter(array())),
+                'paginator' => (isset($paginator)) ? $paginator,
             ));
         }
+    }
+
+    /**
+     * Returns a paginator suitable to the object passed in
+     */
+    public function getPaginator($resultset = array())
+    {
+        if (is_array($resultset)) {
+            $paginator = new Paginator(new ArrayAdapter($resultset));
+        } elseif(!is_null($resultset)) {
+            $paginator = new Paginator(new ArrayAdapter(array()));
+        } else {
+            $paginator = new Paginator(new Iterator($resultset));
+        }
+        return $paginator;
     }
 
     /**
@@ -189,7 +194,9 @@ class FeedsController extends AbstractActionController
         }
 
         if ($this->getRequest()->isPost()) {
+
             $form->setData($this->getRequest()->getPost());
+
             if ($form->isValid()) {
                 if ($this->_feedTable->delete($form->getInputFilter()->getValue('feedId'))) {
                     if (!is_null($this->_cache)) {
