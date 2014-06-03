@@ -25,7 +25,8 @@ use Zend\Filter\StringTrim;
 use Zend\Filter\StripNewlines;
 use Zend\Filter\StripTags;
 use Zend\Filter\Int;
-use Zend\Validator;
+use Zend\Filter\FilterChain;
+use Zend\Validator\Digits;
 
 class DeleteFeedInputFilter extends InputFilter
 {
@@ -74,11 +75,11 @@ class DeleteFeedInputFilter extends InputFilter
 
                 case ("feedId"):
                     $input->getValidatorChain()
-                        ->attach(new Validator\Digits(array(
+                        ->attach(new Digits(array(
                                 'messageTemplates' => array(
-                                    Validator\Digits::NOT_DIGITS => 'The value supplied is not a valid number',
-                                    Validator\Digits::STRING_EMPTY => 'A value must be supplied',
-                                    Validator\Digits::INVALID => 'The value supplied is not a valid number',
+                                    Digits::NOT_DIGITS => 'The value supplied is not a valid number',
+                                    Digits::STRING_EMPTY => 'A value must be supplied',
+                                    Digits::INVALID => 'The value supplied is not a valid number',
                                 )
                             )
                         ));
@@ -115,11 +116,8 @@ class DeleteFeedInputFilter extends InputFilter
 
     protected function _getStandardFilter()
     {
-        $baseInputFilterChain = new \Zend\Filter\FilterChain();
-        $baseInputFilterChain->attach(new HtmlEntities())
-            ->attach(new StringTrim())
-            ->attach(new StripNewlines())
-            ->attach(new StripTags());
+        $baseInputFilterChain = new FilterChain();
+        $baseInputFilterChain->attach(new Int());
 
         return $baseInputFilterChain;
     }

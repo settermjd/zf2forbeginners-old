@@ -25,7 +25,8 @@ use Zend\Filter\StringTrim;
 use Zend\Filter\StripNewlines;
 use Zend\Filter\StripTags;
 use Zend\Filter\Int;
-use Zend\Validator;
+use Zend\Filter\FilterChain;
+use Zend\Validator\Date;
 
 class SearchFeedInputFilter extends InputFilter
 {
@@ -101,11 +102,11 @@ class SearchFeedInputFilter extends InputFilter
                 case ("startDate"):
                 case ("endDate"):
                     $input->getValidatorChain()
-                        ->attach(new Validator\Date(array(
+                          ->attach(new Date(array(
                                 'messageTemplates' => array(
-                                    Validator\Date::FALSEFORMAT => 'The date supplied is not in the correct format',
-                                    Validator\Date::INVALID => "The input does not appear to be a valid date",
-                                    Validator\Date::INVALID_DATE => "The input does not fit the date format '%format%'",
+                                    Date::FALSEFORMAT => 'The date supplied is not in the correct format',
+                                    Date::INVALID => "The input does not appear to be a valid date",
+                                    Date::INVALID_DATE => "The input does not fit the date format '%format%'",
                                 )
                             )
                         ));
@@ -119,10 +120,14 @@ class SearchFeedInputFilter extends InputFilter
         return $this;
     }
 
-
+    /**
+     * Apply a standard set of filters to elements
+     *
+     * @return \Zend\Filter\FilterChain
+     */
     protected function _getStandardFilter()
     {
-        $baseInputFilterChain = new \Zend\Filter\FilterChain();
+        $baseInputFilterChain = new FilterChain();
         $baseInputFilterChain->attach(new HtmlEntities())
             ->attach(new StringTrim())
             ->attach(new StripNewlines())
