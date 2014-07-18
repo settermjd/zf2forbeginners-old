@@ -9,7 +9,7 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "lib-redis": "*",
+        "predis/predis": "*",
         "zendframework/zendframework": "2.3.*",
 		"zendframework/zend-log": "2.3.*@dev",
         "zendframework/zftool": "dev-master",
@@ -17,6 +17,7 @@
         "slm/mail": "~1.4",
         "enlitepro/enlite-monolog": "~1.1.0",
         "zf-commons/zfc-user": "dev-master",
+        "evandotpro/edp-module-layouts": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
